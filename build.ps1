@@ -50,12 +50,24 @@ Invoke-Step "Сборка ($Configuration)" {
 }
 
 if (-not $SkipTests) {
-    Invoke-Step 'Тесты' {
-        $arguments = @($solution, '-c', $Configuration, '--no-build')
-        if ($Coverage) {
-            $arguments += @('--collect:XPlat Code Coverage', '--results-directory', (Join-Path $root $OutputPath 'coverage'))
+    # Тесты интерфейса и картинок собраны под net8.0-windows и запускаются
+    # только на Windows. На других системах гоняем то, что действительно можно.
+    $targets = if ($IsWindows) {
+        @{ Name = 'Тесты'; Projects = @($solution) }
+    }
+    else {
+        Write-Host 'Не Windows: тесты DupFinder.App.Tests и DupFinder.Imaging.Tests пропущены (нужен Microsoft.WindowsDesktop.App).' -ForegroundColor Yellow
+        @{ Name = 'Тесты движка'; Projects = @(Join-Path $root 'tests/DupFinder.Core.Tests/DupFinder.Core.Tests.csproj') }
+    }
+
+    foreach ($project in $targets.Projects) {
+        Invoke-Step $targets.Name {
+            $arguments = @($project, '-c', $Configuration, '--no-build')
+            if ($Coverage) {
+                $arguments += @('--collect:XPlat Code Coverage', '--results-directory', (Join-Path $root $OutputPath 'coverage'))
+            }
+            dotnet test @arguments
         }
-        dotnet test @arguments
     }
 }
 
