@@ -30,7 +30,10 @@
     <GradientStop Color="#A78BFA" Offset="1"/>
   </LinearGradientBrush>
 
-  <DropShadowEffect x:Key="CardShadow" BlurRadius="24" ShadowDepth="6" Opacity="0.45" Color="#000000"/>
+  <!-- Граница карточки вместо тяжёлой тени: тень с большим смещением — приём
+       из плоского дизайна середины 2010-х, сейчас панели разделяют тонкой линией. -->
+  <SolidColorBrush x:Key="CardBorder" Color="#232A38"/>
+  <DropShadowEffect x:Key="CardShadow" BlurRadius="18" ShadowDepth="0" Opacity="0.22" Color="#000000"/>
 
   <!-- ===== Текст ===== -->
   <Style TargetType="TextBlock">

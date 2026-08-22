@@ -9,6 +9,7 @@
   </UserControl.Resources>
 
   <Border Background="{StaticResource Surface}" CornerRadius="14"
+          BorderBrush="{StaticResource CardBorder}" BorderThickness="1"
           Effect="{StaticResource CardShadow}" Padding="14">
     <Grid>
       <Grid.RowDefinitions>
