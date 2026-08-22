@@ -425,4 +425,55 @@
   <data name="SectionSafety" xml:space="preserve">
     <value>БЕЗОПАСНОСТЬ</value>
   </data>
+  <data name="DeleteConfirmTitle" xml:space="preserve">
+    <value>Что будет удалено</value>
+  </data>
+  <data name="DeleteConfirmHeaderFormat" xml:space="preserve">
+    <value>В Корзину отправится {0} файл(ов), освободится {1}.</value>
+  </data>
+  <data name="DeleteConfirmNothing" xml:space="preserve">
+    <value>Удалять нечего: все отмеченные файлы пропущены.</value>
+  </data>
+  <data name="DeleteConfirmSkippedFormat" xml:space="preserve">
+    <value>Пропущено файлов: {0}</value>
+  </data>
+  <data name="DeleteConfirmProceed" xml:space="preserve">
+    <value>Удалить в Корзину</value>
+  </data>
+  <data name="DeleteConfirmCancel" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="RefusalProtected" xml:space="preserve">
+    <value>защищён: папка-эталон или системная папка</value>
+  </data>
+  <data name="RefusalWholeGroup" xml:space="preserve">
+    <value>последний файл в группе — что-то должно остаться</value>
+  </data>
+  <data name="RefusalChanged" xml:space="preserve">
+    <value>изменился после проверки — данные устарели</value>
+  </data>
+  <data name="RefusalMissing" xml:space="preserve">
+    <value>файла уже нет</value>
+  </data>
+  <data name="JournalTitle" xml:space="preserve">
+    <value>Что программа сделала с файлами</value>
+  </data>
+  <data name="JournalEmpty" xml:space="preserve">
+    <value>Пока ничего не удалялось и не перемещалось.</value>
+  </data>
+  <data name="JournalOpen" xml:space="preserve">
+    <value>Что сделано с файлами</value>
+  </data>
+  <data name="KindRecycled" xml:space="preserve">
+    <value>в Корзину</value>
+  </data>
+  <data name="KindMoved" xml:space="preserve">
+    <value>перемещён</value>
+  </data>
+  <data name="KindLinked" xml:space="preserve">
+    <value>заменён ссылкой</value>
+  </data>
+  <data name="JournalFailed" xml:space="preserve">
+    <value>не удалось</value>
+  </data>
 </root>

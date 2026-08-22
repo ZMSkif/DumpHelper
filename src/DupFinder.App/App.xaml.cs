@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Threading;
 using DupFinder.App.Services;
 using DupFinder.App.ViewModels;
+using DupFinder.Core.Actions;
 using DupFinder.Core.Files;
 using DupFinder.Core.Scanning;
 using Serilog;
@@ -38,11 +39,13 @@ public partial class App : Application
         var shell = new ShellService();
         var dialogs = new DialogService(shell);
         var scanLog = new SerilogScanLog(Log.Logger);
-        var scanner = DuplicateScanner.CreateDefault(new FileSystemFileSource(scanLog), scanLog);
+        var fileSource = new FileSystemFileSource(scanLog);
+        var scanner = DuplicateScanner.CreateDefault(fileSource, scanLog);
+        var journal = new OperationJournal(AppPaths.OperationJournal, scanLog);
 
         var main = new MainViewModel(
             new ScanViewModel(dialogs),
-            new ResultsViewModel(dialogs, shell, new ShellRecycleBin()),
+            new ResultsViewModel(dialogs, shell, new ShellRecycleBin(), new DeletionPlanner(fileSource), journal),
             new ScanRunner(scanner),
             dialogs,
             shell,

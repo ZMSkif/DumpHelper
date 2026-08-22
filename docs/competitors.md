@@ -68,3 +68,15 @@
 - [Duplicate Cleaner (DigitalVolcano)](https://www.digitalvolcano.co.uk/duplicatecleaner.html)
 - [Find Duplicate HEIC, HEIF, HEVC, JPG](https://www.mindgems.com/article/find-duplicate-heic-heif-hevc-jpg-images/)
 - [21 Best Duplicate Photo Finders in 2026](https://www.mindgems.com/article/top-15-best-photo-duplicate-finder-to-delete-duplicate-photos/)
+
+---
+
+## Что уже сделано из этого списка
+
+| Пункт | Состояние |
+|---|---|
+| №1 Защита системных папок | Готово. Файлы из Windows, Program Files и ProgramData показываются, но защищены наравне с папкой-эталоном. Настройка в разделе «Безопасность» |
+| Проверка файла перед удалением | Готово. Файл, изменившийся или исчезнувший после сканирования, не удаляется: данные о нём устарели |
+| Группа не может опуститься до нуля | Готово. Если отмечена вся группа, оригинал остаётся |
+| Список перед удалением | Готово. Окно показывает, что будет удалено и что пропущено с указанием причины |
+| Журнал операций (ТЗ §4.6) | Готово. Каждое удаление записывается: что, когда, сколько весило, получилось ли. Смотреть — кнопка «Что сделано с файлами» |

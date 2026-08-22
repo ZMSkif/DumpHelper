@@ -28,7 +28,20 @@ public sealed class FakeDialogService : IDialogService
 
     public int LogShown { get; private set; }
 
+    /// <summary>Планы, которые показывали на подтверждение.</summary>
+    public List<DupFinder.Core.Actions.DeletionPlan> Plans { get; } = new();
+
+    public bool ConfirmDeletion(DupFinder.Core.Actions.DeletionPlan plan)
+    {
+        Plans.Add(plan);
+        return ConfirmAnswer;
+    }
+
     public void ShowLog() => LogShown++;
+
+    public int JournalShown { get; private set; }
+
+    public void ShowOperationJournal(DupFinder.Core.Actions.OperationJournal journal) => JournalShown++;
 
     public ThreeWayAnswer Ask(string message, string title)
     {

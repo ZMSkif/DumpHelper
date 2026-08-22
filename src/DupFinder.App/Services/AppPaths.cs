@@ -17,6 +17,9 @@ public static class AppPaths
     /// <summary>Настройки интерфейса.</summary>
     public static string Settings => Path.Combine(Root, "settings.json");
 
+    /// <summary>Журнал того, что программа сделала с файлами.</summary>
+    public static string OperationJournal => Path.Combine(Root, "operations.jsonl");
+
     /// <summary>Профили сканирования.</summary>
     public static string Profiles => Path.Combine(Root, "profiles");
 

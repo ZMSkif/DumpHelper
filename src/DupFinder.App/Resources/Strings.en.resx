@@ -424,4 +424,55 @@
   <data name="SectionSafety" xml:space="preserve">
     <value>SAFETY</value>
   </data>
+  <data name="DeleteConfirmTitle" xml:space="preserve">
+    <value>What will be deleted</value>
+  </data>
+  <data name="DeleteConfirmHeaderFormat" xml:space="preserve">
+    <value>{0} file(s) will go to the Recycle Bin, freeing {1}.</value>
+  </data>
+  <data name="DeleteConfirmNothing" xml:space="preserve">
+    <value>Nothing to delete: every marked file was skipped.</value>
+  </data>
+  <data name="DeleteConfirmSkippedFormat" xml:space="preserve">
+    <value>Skipped files: {0}</value>
+  </data>
+  <data name="DeleteConfirmProceed" xml:space="preserve">
+    <value>Move to Recycle Bin</value>
+  </data>
+  <data name="DeleteConfirmCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="RefusalProtected" xml:space="preserve">
+    <value>protected: reference or system folder</value>
+  </data>
+  <data name="RefusalWholeGroup" xml:space="preserve">
+    <value>last file in its group — something must remain</value>
+  </data>
+  <data name="RefusalChanged" xml:space="preserve">
+    <value>changed since the scan — the data is stale</value>
+  </data>
+  <data name="RefusalMissing" xml:space="preserve">
+    <value>the file is gone</value>
+  </data>
+  <data name="JournalTitle" xml:space="preserve">
+    <value>What the app did to your files</value>
+  </data>
+  <data name="JournalEmpty" xml:space="preserve">
+    <value>Nothing has been deleted or moved yet.</value>
+  </data>
+  <data name="JournalOpen" xml:space="preserve">
+    <value>File operations</value>
+  </data>
+  <data name="KindRecycled" xml:space="preserve">
+    <value>to Recycle Bin</value>
+  </data>
+  <data name="KindMoved" xml:space="preserve">
+    <value>moved</value>
+  </data>
+  <data name="KindLinked" xml:space="preserve">
+    <value>replaced with a link</value>
+  </data>
+  <data name="JournalFailed" xml:space="preserve">
+    <value>failed</value>
+  </data>
 </root>
