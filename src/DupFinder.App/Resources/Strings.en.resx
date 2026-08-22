@@ -394,4 +394,25 @@
   <data name="BuildFromCommit" xml:space="preserve">
     <value>built from commit</value>
   </data>
+  <data name="ModeComingSoon" xml:space="preserve">
+    <value>coming soon</value>
+  </data>
+  <data name="LogTitle" xml:space="preserve">
+    <value>Activity log</value>
+  </data>
+  <data name="LogRefresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>Copy all</value>
+  </data>
+  <data name="LogOpenFolder" xml:space="preserve">
+    <value>Open log folder</value>
+  </data>
+  <data name="LogEmpty" xml:space="preserve">
+    <value>The log is empty — entries will appear here as the app works.</value>
+  </data>
+  <data name="LogReadFailedFormat" xml:space="preserve">
+    <value>Could not read the log: {0}</value>
+  </data>
 </root>

@@ -26,6 +26,10 @@ public sealed class FakeDialogService : IDialogService
         return ConfirmAnswer;
     }
 
+    public int LogShown { get; private set; }
+
+    public void ShowLog() => LogShown++;
+
     public ThreeWayAnswer Ask(string message, string title)
     {
         Questions.Add(message);

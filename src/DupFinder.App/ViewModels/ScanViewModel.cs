@@ -44,7 +44,7 @@ public sealed partial class ScanViewModel : ObservableObject
     private bool _confirmBytewise;
 
     [ObservableProperty]
-    private ChoiceItem<ScanMode> _selectedMode;
+    private ScanMode _selectedMode = ScanMode.Exact;
 
     [ObservableProperty]
     private ChoiceItem<FileKindFilter> _selectedKind;
@@ -58,8 +58,9 @@ public sealed partial class ScanViewModel : ObservableObject
     [ObservableProperty]
     private bool _isBusy;
 
+    // По умолчанию false: до первого запуска полоса прогресса не должна ничем шевелиться.
     [ObservableProperty]
-    private bool _isIndeterminate = true;
+    private bool _isIndeterminate;
 
     [ObservableProperty]
     private double _progressValue;
@@ -76,9 +77,9 @@ public sealed partial class ScanViewModel : ObservableObject
 
         Modes = new[]
         {
-            new ChoiceItem<ScanMode>(ScanMode.Exact, Strings.ModeExact, Strings.ModeExactHint),
-            new ChoiceItem<ScanMode>(ScanMode.SameShot, Strings.ModeSameShot, Strings.ModeSameShotHint) { IsEnabled = false },
-            new ChoiceItem<ScanMode>(ScanMode.Similar, Strings.ModeSimilar, Strings.ModeSimilarHint) { IsEnabled = false },
+            new ModeOptionViewModel(ScanMode.Exact, Strings.ModeExact, Strings.ModeExactHint, true, SelectMode),
+            new ModeOptionViewModel(ScanMode.SameShot, Strings.ModeSameShot, Strings.ModeSameShotHint, false, SelectMode),
+            new ModeOptionViewModel(ScanMode.Similar, Strings.ModeSimilar, Strings.ModeSimilarHint, false, SelectMode),
         };
 
         Kinds = new[]
@@ -109,7 +110,7 @@ public sealed partial class ScanViewModel : ObservableObject
             new ChoiceItem<DiskKind>(DiskKind.Network, Strings.DiskNetwork),
         };
 
-        _selectedMode = Modes[0];
+        Modes[0].IsSelected = true;
         _selectedKind = Kinds[0];
         _selectedOriginalRule = OriginalRules[0];
         _selectedDiskKind = DiskKinds[0];
@@ -118,7 +119,7 @@ public sealed partial class ScanViewModel : ObservableObject
     /// <summary>Папки, которые будут проверяться.</summary>
     public ObservableCollection<string> Roots { get; } = new();
 
-    public IReadOnlyList<ChoiceItem<ScanMode>> Modes { get; }
+    public IReadOnlyList<ModeOptionViewModel> Modes { get; }
 
     public IReadOnlyList<ChoiceItem<FileKindFilter>> Kinds { get; }
 
@@ -127,7 +128,7 @@ public sealed partial class ScanViewModel : ObservableObject
     public IReadOnlyList<ChoiceItem<DiskKind>> DiskKinds { get; }
 
     /// <summary>Пояснение к выбранному режиму простым языком.</summary>
-    public string ModeHint => SelectedMode.Hint ?? string.Empty;
+    public string ModeHint => Modes.FirstOrDefault(m => m.Value == SelectedMode)?.Description ?? string.Empty;
 
     /// <summary>Есть ли хоть одна папка — от этого зависит доступность кнопки «Начать».</summary>
     public bool HasRoots => Roots.Count > 0;
@@ -180,7 +181,7 @@ public sealed partial class ScanViewModel : ObservableObject
         return new ScanOptions(
             Roots: Roots.ToArray(),
             Recurse: Recurse,
-            Mode: SelectedMode.Value,
+            Mode: SelectedMode,
             Kinds: SelectedKind.Value,
             MinBytes: ParseNumber(MinSizeKb) * 1024,
             ExcludeMasks: masks,
@@ -298,14 +299,20 @@ public sealed partial class ScanViewModel : ObservableObject
     [RelayCommand]
     private void ClearReference() => ReferenceFolder = string.Empty;
 
-    partial void OnSelectedModeChanged(ChoiceItem<ScanMode> value)
+    partial void OnSelectedModeChanged(ScanMode value) => OnPropertyChanged(nameof(ModeHint));
+
+    /// <summary>Карточка сообщает о выборе; остальные снимаем.</summary>
+    private void SelectMode(ModeOptionViewModel option)
     {
-        OnPropertyChanged(nameof(ModeHint));
-        if (!value.IsEnabled)
+        foreach (var mode in Modes)
         {
-            _dialogs.Warn(Strings.ModeNotAvailable);
-            SelectedMode = Modes[0];
+            if (!ReferenceEquals(mode, option))
+            {
+                mode.IsSelected = false;
+            }
         }
+
+        SelectedMode = option.Value;
     }
 
     private static long ParseNumber(string text) =>

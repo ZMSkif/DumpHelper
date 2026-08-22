@@ -649,4 +649,90 @@
     </Border>
   </DataTemplate>
 
+  <!-- ===== Карточка режима поиска (ТЗ §5) ===== -->
+  <Style x:Key="ModeCard" TargetType="RadioButton">
+    <Setter Property="Cursor" Value="Hand"/>
+    <Setter Property="Margin" Value="0,0,0,8"/>
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="RadioButton">
+          <Border x:Name="Card" CornerRadius="12" Padding="14,12"
+                  Background="{StaticResource Surface2}"
+                  BorderBrush="{StaticResource Line}" BorderThickness="1.5">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
+
+              <!-- Кружок выбора -->
+              <Grid Grid.Column="0" Width="18" Height="18" VerticalAlignment="Top" Margin="0,2,12,0">
+                <Ellipse x:Name="Ring" Stroke="#3B4356" StrokeThickness="1.5"/>
+                <Ellipse x:Name="Dot" Width="9" Height="9" Fill="{StaticResource AccentGrad}" Opacity="0"/>
+              </Grid>
+
+              <StackPanel Grid.Column="1">
+                <TextBlock x:Name="Title" Text="{Binding Title}" FontWeight="SemiBold" FontSize="14"
+                           Foreground="{StaticResource Text}"/>
+                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontSize="11.5"
+                           Foreground="{StaticResource Muted}" Margin="0,4,0,0" LineHeight="17"/>
+              </StackPanel>
+
+              <!-- Пометка «скоро» для режимов без движка -->
+              <Border Grid.Column="2" VerticalAlignment="Top" CornerRadius="6" Padding="7,2"
+                      Background="{StaticResource Surface3}" Margin="10,1,0,0">
+                <Border.Style>
+                  <Style TargetType="Border">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                      <DataTrigger Binding="{Binding ShowsBadge}" Value="True">
+                        <Setter Property="Visibility" Value="Visible"/>
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </Border.Style>
+                <TextBlock Text="{Binding Badge}" FontSize="10" FontWeight="SemiBold"
+                           Foreground="{StaticResource AccentHi}"/>
+              </Border>
+            </Grid>
+          </Border>
+
+          <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+              <Setter TargetName="Card" Property="BorderBrush" Value="#3B4356"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+              <Setter TargetName="Card" Property="BorderBrush" Value="{StaticResource Accent}"/>
+              <Setter TargetName="Card" Property="Background" Value="#1B2033"/>
+              <Setter TargetName="Ring" Property="Stroke" Value="{StaticResource Accent}"/>
+              <Trigger.EnterActions>
+                <BeginStoryboard>
+                  <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="Dot" Storyboard.TargetProperty="Opacity"
+                                     To="1" Duration="0:0:0.15"/>
+                  </Storyboard>
+                </BeginStoryboard>
+              </Trigger.EnterActions>
+              <Trigger.ExitActions>
+                <BeginStoryboard>
+                  <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="Dot" Storyboard.TargetProperty="Opacity"
+                                     To="0" Duration="0:0:0.12"/>
+                  </Storyboard>
+                </BeginStoryboard>
+              </Trigger.ExitActions>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter TargetName="Card" Property="Opacity" Value="0.5"/>
+              <Setter Property="Cursor" Value="Arrow"/>
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+  </Style>
+
 </ResourceDictionary>

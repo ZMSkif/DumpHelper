@@ -28,6 +28,9 @@ public interface IDialogService
 
     /// <summary>Задаёт вопрос «да/нет/отмена».</summary>
     ThreeWayAnswer Ask(string message, string title);
+
+    /// <summary>Открывает окно с журналом работы.</summary>
+    void ShowLog();
 }
 
 /// <inheritdoc />
@@ -74,6 +77,15 @@ public sealed class DialogService : IDialogService
 
     public bool Confirm(string message, string title) =>
         MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
+
+    public void ShowLog()
+    {
+        var window = new Views.LogWindow(new ViewModels.LogViewModel(_shell))
+        {
+            Owner = Application.Current?.MainWindow,
+        };
+        window.ShowDialog();
+    }
 
     public ThreeWayAnswer Ask(string message, string title) =>
         MessageBox.Show(message, title, MessageBoxButton.YesNoCancel, MessageBoxImage.Question) switch

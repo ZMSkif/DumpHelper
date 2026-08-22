@@ -395,4 +395,25 @@
   <data name="BuildFromCommit" xml:space="preserve">
     <value>собрано из коммита</value>
   </data>
+  <data name="ModeComingSoon" xml:space="preserve">
+    <value>скоро</value>
+  </data>
+  <data name="LogTitle" xml:space="preserve">
+    <value>Журнал работы</value>
+  </data>
+  <data name="LogRefresh" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>Копировать всё</value>
+  </data>
+  <data name="LogOpenFolder" xml:space="preserve">
+    <value>Открыть папку с журналами</value>
+  </data>
+  <data name="LogEmpty" xml:space="preserve">
+    <value>Журнал пока пуст — здесь появятся записи о работе приложения.</value>
+  </data>
+  <data name="LogReadFailedFormat" xml:space="preserve">
+    <value>Не удалось прочитать журнал: {0}</value>
+  </data>
 </root>

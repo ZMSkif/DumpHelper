@@ -348,4 +348,25 @@ public static class Strings
 
     /// <summary>собрано из коммита</summary>
     public static string BuildFromCommit => Get(nameof(BuildFromCommit));
+
+    /// <summary>скоро</summary>
+    public static string ModeComingSoon => Get(nameof(ModeComingSoon));
+
+    /// <summary>Журнал работы</summary>
+    public static string LogTitle => Get(nameof(LogTitle));
+
+    /// <summary>Обновить</summary>
+    public static string LogRefresh => Get(nameof(LogRefresh));
+
+    /// <summary>Копировать всё</summary>
+    public static string LogCopy => Get(nameof(LogCopy));
+
+    /// <summary>Открыть папку с журналами</summary>
+    public static string LogOpenFolder => Get(nameof(LogOpenFolder));
+
+    /// <summary>Журнал пока пуст — здесь появятся записи о работе приложения.</summary>
+    public static string LogEmpty => Get(nameof(LogEmpty));
+
+    /// <summary>Не удалось прочитать журнал: {0}</summary>
+    public static string LogReadFailedFormat => Get(nameof(LogReadFailedFormat));
 }

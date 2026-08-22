@@ -46,13 +46,9 @@ public sealed partial class MainViewModel : ObservableObject
     /// <summary>Идёт ли сейчас поиск.</summary>
     public bool IsScanning => Scan.IsBusy;
 
-    /// <summary>Открывает папку с журналами.</summary>
+    /// <summary>Показывает журнал работы прямо в приложении.</summary>
     [RelayCommand]
-    private void OpenLogFolder()
-    {
-        AppPaths.EnsureCreated();
-        _shell.Open(AppPaths.Logs);
-    }
+    private void OpenLog() => _dialogs.ShowLog();
 
     [RelayCommand(CanExecute = nameof(CanStart))]
     private async Task StartScanAsync()

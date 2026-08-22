@@ -43,16 +43,15 @@
           <CheckBox Content="{x:Static res:Strings.IncludeSystem}" IsChecked="{Binding Scan.IncludeSystem}"/>
 
           <TextBlock Text="{x:Static res:Strings.SectionMode}" Style="{StaticResource SectionHeader}"/>
-          <ComboBox ItemsSource="{Binding Scan.Modes}"
-                    SelectedItem="{Binding Scan.SelectedMode}"
-                    DisplayMemberPath="Label">
-            <ComboBox.ItemContainerStyle>
-              <Style TargetType="ComboBoxItem" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-                <Setter Property="IsEnabled" Value="{Binding IsEnabled}"/>
-              </Style>
-            </ComboBox.ItemContainerStyle>
-          </ComboBox>
-          <TextBlock Text="{Binding Scan.ModeHint}" Style="{StaticResource Hint}"/>
+          <ItemsControl ItemsSource="{Binding Scan.Modes}" Focusable="False">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <RadioButton Style="{StaticResource ModeCard}"
+                             IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                             IsEnabled="{Binding IsAvailable}"/>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
 
           <TextBlock Text="{x:Static res:Strings.SectionReference}" Style="{StaticResource SectionHeader}"/>
           <Grid>
@@ -135,12 +134,24 @@
         </StackPanel>
 
         <Button Grid.Row="0" Grid.Column="3" Style="{StaticResource GhostButton}"
-                Content="{x:Static res:Strings.OpenLog}" Command="{Binding OpenLogFolderCommand}"/>
+                Content="{x:Static res:Strings.OpenLog}" Command="{Binding OpenLogCommand}"/>
 
         <ProgressBar Grid.Row="1" Grid.ColumnSpan="4" Margin="0,14,0,0"
                      Minimum="0" Maximum="100"
                      Value="{Binding Scan.ProgressValue, Mode=OneWay}"
-                     IsIndeterminate="{Binding Scan.IsIndeterminate}"/>
+                     IsIndeterminate="{Binding Scan.IsIndeterminate}">
+          <ProgressBar.Style>
+            <Style TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
+              <!-- До первого запуска полосе нечего показывать, и она не должна мелькать. -->
+              <Setter Property="Visibility" Value="Collapsed"/>
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding Scan.IsBusy}" Value="True">
+                  <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </ProgressBar.Style>
+        </ProgressBar>
       </Grid>
     </Border>
   </Grid>
