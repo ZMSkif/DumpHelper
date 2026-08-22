@@ -342,4 +342,10 @@ public static class Strings
 
     /// <summary>Этот режим появится на следующем этапе. Пока доступны точные копии.</summary>
     public static string ModeNotAvailable => Get(nameof(ModeNotAvailable));
+
+    /// <summary>Версия приложения и коммит, из которого оно собрано</summary>
+    public static string VersionTooltip => Get(nameof(VersionTooltip));
+
+    /// <summary>собрано из коммита</summary>
+    public static string BuildFromCommit => Get(nameof(BuildFromCommit));
 }
