@@ -104,6 +104,12 @@ public sealed class FileSystemFileSource : IFileSource
 
     public bool FileExists(string path) => File.Exists(path);
 
+    public FileEntry? Describe(string path)
+    {
+        var info = new FileInfo(path);
+        return info.Exists ? new FileEntry(info.FullName, info.Length, info.LastWriteTimeUtc) : null;
+    }
+
     internal static StringComparer PathComparer =>
         OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
 

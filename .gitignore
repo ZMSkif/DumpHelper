@@ -1,8 +1,7 @@
 bin/
 obj/
 artifacts/
+dist/
 .vs/
 *.user
 TestResults/
-
-# dist/ намеренно не игнорируется: там лежит готовый exe, см. dist/README.md

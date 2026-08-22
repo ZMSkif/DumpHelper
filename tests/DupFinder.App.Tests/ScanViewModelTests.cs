@@ -119,15 +119,47 @@ public class ScanViewModelTests
     }
 
     [Fact]
-    public void Недоступный_режим_возвращается_к_точным_копиям()
+    public void По_умолчанию_выбраны_точные_копии()
     {
-        var dialogs = new FakeDialogService();
-        var vm = new ScanViewModel(dialogs);
+        var vm = new ScanViewModel(new FakeDialogService());
 
-        vm.SelectedMode = vm.Modes.Single(m => m.Value == ScanMode.Similar);
+        vm.SelectedMode.Should().Be(ScanMode.Exact);
+        vm.Modes.Single(m => m.Value == ScanMode.Exact).IsSelected.Should().BeTrue();
+        vm.ModeHint.Should().NotBeNullOrWhiteSpace();
+    }
 
-        vm.SelectedMode.Value.Should().Be(ScanMode.Exact);
-        dialogs.Warnings.Should().ContainSingle();
+    [Fact]
+    public void Режимы_без_движка_помечены_недоступными()
+    {
+        var vm = new ScanViewModel(new FakeDialogService());
+
+        vm.Modes.Single(m => m.Value == ScanMode.Exact).IsAvailable.Should().BeTrue();
+        vm.Modes.Single(m => m.Value == ScanMode.SameShot).IsAvailable.Should().BeFalse();
+        vm.Modes.Single(m => m.Value == ScanMode.Similar).IsAvailable.Should().BeFalse();
+        vm.Modes.Where(m => !m.IsAvailable).Should().OnlyContain(m => m.ShowsBadge);
+    }
+
+    [Fact]
+    public void Выбор_карточки_снимает_остальные_и_меняет_режим()
+    {
+        var vm = new ScanViewModel(new FakeDialogService());
+        var similar = vm.Modes.Single(m => m.Value == ScanMode.Similar);
+
+        similar.IsSelected = true;
+
+        vm.SelectedMode.Should().Be(ScanMode.Similar);
+        vm.Modes.Count(m => m.IsSelected).Should().Be(1);
+        vm.ModeHint.Should().Be(similar.Description);
+    }
+
+    [Fact]
+    public void Полоса_прогресса_до_запуска_ничего_не_показывает()
+    {
+        var vm = new ScanViewModel(new FakeDialogService());
+
+        vm.IsBusy.Should().BeFalse();
+        vm.IsIndeterminate.Should().BeFalse("до первого запуска анимации быть не должно");
+        vm.ProgressValue.Should().Be(0);
     }
 
     [Fact]

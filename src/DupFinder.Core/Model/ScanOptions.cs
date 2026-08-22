@@ -35,6 +35,12 @@ public sealed record ScanOptions(
     /// <summary>Папки, которые не обходить (по префиксу пути).</summary>
     public IReadOnlyList<string> ExcludeFolders { get; init; } = Array.Empty<string>();
 
+    /// <summary>
+    /// Защищать файлы в системных папках: Windows, Program Files, ProgramData.
+    /// Дубликаты там встречаются постоянно, но удалять их нельзя. По умолчанию включено.
+    /// </summary>
+    public bool ProtectSystemFolders { get; init; } = true;
+
     /// <summary>Включать скрытые файлы и папки.</summary>
     public bool IncludeHidden { get; init; }
 

@@ -28,6 +28,18 @@ public interface IDialogService
 
     /// <summary>Задаёт вопрос «да/нет/отмена».</summary>
     ThreeWayAnswer Ask(string message, string title);
+
+    /// <summary>Открывает окно с журналом работы.</summary>
+    void ShowLog();
+
+    /// <summary>
+    /// Показывает, что именно будет удалено и что пропущено.
+    /// Возвращает true, если человек подтвердил.
+    /// </summary>
+    bool ConfirmDeletion(DupFinder.Core.Actions.DeletionPlan plan);
+
+    /// <summary>Открывает журнал того, что программа сделала с файлами.</summary>
+    void ShowOperationJournal(DupFinder.Core.Actions.OperationJournal journal);
 }
 
 /// <inheritdoc />
@@ -74,6 +86,33 @@ public sealed class DialogService : IDialogService
 
     public bool Confirm(string message, string title) =>
         MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
+
+    public void ShowLog()
+    {
+        var window = new Views.LogWindow(new ViewModels.LogViewModel(_shell))
+        {
+            Owner = Application.Current?.MainWindow,
+        };
+        window.ShowDialog();
+    }
+
+    public bool ConfirmDeletion(DupFinder.Core.Actions.DeletionPlan plan)
+    {
+        var window = new Views.DeleteConfirmWindow(new ViewModels.DeletionConfirmViewModel(plan))
+        {
+            Owner = Application.Current?.MainWindow,
+        };
+        return window.ShowDialog() == true;
+    }
+
+    public void ShowOperationJournal(DupFinder.Core.Actions.OperationJournal journal)
+    {
+        var window = new Views.JournalWindow(new ViewModels.JournalViewModel(journal, _shell))
+        {
+            Owner = Application.Current?.MainWindow,
+        };
+        window.ShowDialog();
+    }
 
     public ThreeWayAnswer Ask(string message, string title) =>
         MessageBox.Show(message, title, MessageBoxButton.YesNoCancel, MessageBoxImage.Question) switch

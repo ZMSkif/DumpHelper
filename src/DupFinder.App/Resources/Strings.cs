@@ -348,4 +348,85 @@ public static class Strings
 
     /// <summary>собрано из коммита</summary>
     public static string BuildFromCommit => Get(nameof(BuildFromCommit));
+
+    /// <summary>скоро</summary>
+    public static string ModeComingSoon => Get(nameof(ModeComingSoon));
+
+    /// <summary>Журнал работы</summary>
+    public static string LogTitle => Get(nameof(LogTitle));
+
+    /// <summary>Обновить</summary>
+    public static string LogRefresh => Get(nameof(LogRefresh));
+
+    /// <summary>Копировать всё</summary>
+    public static string LogCopy => Get(nameof(LogCopy));
+
+    /// <summary>Открыть папку с журналами</summary>
+    public static string LogOpenFolder => Get(nameof(LogOpenFolder));
+
+    /// <summary>Журнал пока пуст — здесь появятся записи о работе приложения.</summary>
+    public static string LogEmpty => Get(nameof(LogEmpty));
+
+    /// <summary>Не удалось прочитать журнал: {0}</summary>
+    public static string LogReadFailedFormat => Get(nameof(LogReadFailedFormat));
+
+    /// <summary>Защищать системные папки Windows</summary>
+    public static string ProtectSystemFolders => Get(nameof(ProtectSystemFolders));
+
+    /// <summary>Файлы из Windows, Program Files и ProgramData будут показаны, но удалить их будет нельзя. Дубликаты там встречаются постоянно, и удаление ломает систему.</summary>
+    public static string ProtectSystemFoldersHint => Get(nameof(ProtectSystemFoldersHint));
+
+    /// <summary>БЕЗОПАСНОСТЬ</summary>
+    public static string SectionSafety => Get(nameof(SectionSafety));
+
+    /// <summary>Что будет удалено</summary>
+    public static string DeleteConfirmTitle => Get(nameof(DeleteConfirmTitle));
+
+    /// <summary>В Корзину отправится {0} файл(ов), освободится {1}.</summary>
+    public static string DeleteConfirmHeaderFormat => Get(nameof(DeleteConfirmHeaderFormat));
+
+    /// <summary>Удалять нечего: все отмеченные файлы пропущены.</summary>
+    public static string DeleteConfirmNothing => Get(nameof(DeleteConfirmNothing));
+
+    /// <summary>Пропущено файлов: {0}</summary>
+    public static string DeleteConfirmSkippedFormat => Get(nameof(DeleteConfirmSkippedFormat));
+
+    /// <summary>Удалить в Корзину</summary>
+    public static string DeleteConfirmProceed => Get(nameof(DeleteConfirmProceed));
+
+    /// <summary>Отмена</summary>
+    public static string DeleteConfirmCancel => Get(nameof(DeleteConfirmCancel));
+
+    /// <summary>защищён: папка-эталон или системная папка</summary>
+    public static string RefusalProtected => Get(nameof(RefusalProtected));
+
+    /// <summary>последний файл в группе — что-то должно остаться</summary>
+    public static string RefusalWholeGroup => Get(nameof(RefusalWholeGroup));
+
+    /// <summary>изменился после проверки — данные устарели</summary>
+    public static string RefusalChanged => Get(nameof(RefusalChanged));
+
+    /// <summary>файла уже нет</summary>
+    public static string RefusalMissing => Get(nameof(RefusalMissing));
+
+    /// <summary>Что программа сделала с файлами</summary>
+    public static string JournalTitle => Get(nameof(JournalTitle));
+
+    /// <summary>Пока ничего не удалялось и не перемещалось.</summary>
+    public static string JournalEmpty => Get(nameof(JournalEmpty));
+
+    /// <summary>Что сделано с файлами</summary>
+    public static string JournalOpen => Get(nameof(JournalOpen));
+
+    /// <summary>в Корзину</summary>
+    public static string KindRecycled => Get(nameof(KindRecycled));
+
+    /// <summary>перемещён</summary>
+    public static string KindMoved => Get(nameof(KindMoved));
+
+    /// <summary>заменён ссылкой</summary>
+    public static string KindLinked => Get(nameof(KindLinked));
+
+    /// <summary>не удалось</summary>
+    public static string JournalFailed => Get(nameof(JournalFailed));
 }

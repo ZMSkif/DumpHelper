@@ -1,194 +1,283 @@
-using DupFinder.App.Services;
 using DupFinder.App.ViewModels;
+using DupFinder.Core.Actions;
+using DupFinder.Core.Files;
 using DupFinder.Core.Model;
 using FluentAssertions;
 using Xunit;
 
 namespace DupFinder.App.Tests;
 
-public class ResultsViewModelTests
+public class ResultsViewModelTests : IDisposable
 {
-    private static DuplicateGroup Group(int id, params (string Path, long Length, bool Original, bool Protected)[] items) =>
+    private readonly string _root = Path.Combine(
+        Path.GetTempPath(),
+        "dupfinder-app-" + Guid.NewGuid().ToString("N"));
+
+    private readonly FakeDialogService _dialogs = new();
+    private readonly FakeShellService _shell = new();
+    private readonly FakeRecycleBin _bin = new();
+    private readonly ResultsViewModel _vm;
+
+    public ResultsViewModelTests()
+    {
+        Directory.CreateDirectory(_root);
+        _vm = new ResultsViewModel(
+            _dialogs,
+            _shell,
+            _bin,
+            new DeletionPlanner(new FileSystemFileSource()),
+            new OperationJournal(Path.Combine(_root, "operations.jsonl")));
+    }
+
+    public void Dispose()
+    {
+        try
+        {
+            Directory.Delete(_root, recursive: true);
+        }
+        catch (IOException)
+        {
+            // Уборка не должна ронять прогон.
+        }
+    }
+
+    /// <summary>
+    /// Создаёт настоящий файл: планировщик удаления проверяет, что файл на месте
+    /// и не изменился после сканирования, поэтому выдуманные пути не годятся.
+    /// </summary>
+    private string Create(string relative, int size = 64)
+    {
+        var full = Path.Combine(_root, relative);
+        Directory.CreateDirectory(Path.GetDirectoryName(full)!);
+        File.WriteAllBytes(full, new byte[size]);
+        return full;
+    }
+
+    private static DuplicateGroup Group(int id, params (string Path, bool Original, bool Protected)[] items) =>
         new(
             id,
             MatchKind.ExactCopy,
-            items.Select(i => new DuplicateItem(new FileEntry(i.Path, i.Length, DateTime.UtcNow))
+            items.Select(i =>
             {
-                IsOriginal = i.Original,
-                IsProtected = i.Protected,
+                var info = new FileInfo(i.Path);
+                return new DuplicateItem(new FileEntry(i.Path, info.Length, info.LastWriteTimeUtc))
+                {
+                    IsOriginal = i.Original,
+                    IsProtected = i.Protected,
+                };
             }).ToList());
 
-    private static (ResultsViewModel Vm, FakeDialogService Dialogs, FakeShellService Shell, FakeRecycleBin Bin) Create()
+    private DuplicateGroup PairGroup(int id = 1, int size = 64)
     {
-        var dialogs = new FakeDialogService();
-        var shell = new FakeShellService();
-        var bin = new FakeRecycleBin();
-        return (new ResultsViewModel(dialogs, shell, bin), dialogs, shell, bin);
+        var original = Create($"g{id}/оригинал.jpg", size);
+        var copy = Create($"g{id}/копия.jpg", size);
+        return Group(id, (original, true, false), (copy, false, false));
     }
 
     [Fact]
     public void Группы_превращаются_в_строки()
     {
-        var (vm, _, _, _) = Create();
+        _vm.AddGroups(new[] { PairGroup() });
 
-        vm.AddGroups(new[] { Group(1, (@"C:\a.jpg", 100, true, false), (@"C:\b.jpg", 100, false, false)) });
-
-        vm.Rows.Should().HaveCount(2);
-        vm.HasRows.Should().BeTrue();
-        vm.Rows[0].IsOriginal.Should().BeTrue();
+        _vm.Rows.Should().HaveCount(2);
+        _vm.HasRows.Should().BeTrue();
+        _vm.Rows.Count(r => r.IsOriginal).Should().Be(1);
     }
 
     [Fact]
     public void Отметить_все_копии_не_трогает_оригиналы_и_эталоны()
     {
-        var (vm, _, _, _) = Create();
-        vm.AddGroups(new[]
-        {
-            Group(1, (@"C:\a.jpg", 100, true, false), (@"C:\b.jpg", 100, false, false), (@"C:\ref\c.jpg", 100, false, true)),
-        });
+        var original = Create("g1/оригинал.jpg");
+        var copy = Create("g1/копия.jpg");
+        var reference = Create("эталон/копия2.jpg");
+        _vm.AddGroups(new[] { Group(1, (original, true, false), (copy, false, false), (reference, false, true)) });
 
-        vm.MarkCopiesCommand.Execute(null);
+        _vm.MarkCopiesCommand.Execute(null);
 
-        vm.Rows.Single(r => r.Name == "b.jpg").IsMarked.Should().BeTrue();
-        vm.Rows.Single(r => r.Name == "a.jpg").IsMarked.Should().BeFalse();
-        vm.Rows.Single(r => r.Name == "c.jpg").IsMarked.Should().BeFalse();
-        vm.MarkedCount.Should().Be(1);
+        _vm.Rows.Single(r => r.Path == copy).IsMarked.Should().BeTrue();
+        _vm.Rows.Single(r => r.Path == original).IsMarked.Should().BeFalse();
+        _vm.Rows.Single(r => r.Path == reference).IsMarked.Should().BeFalse();
+        _vm.MarkedCount.Should().Be(1);
     }
 
     [Fact]
     public void Снять_все_обнуляет_счётчик()
     {
-        var (vm, _, _, _) = Create();
-        vm.AddGroups(new[] { Group(1, (@"C:\a.jpg", 100, true, false), (@"C:\b.jpg", 100, false, false)) });
-        vm.MarkCopiesCommand.Execute(null);
+        _vm.AddGroups(new[] { PairGroup() });
+        _vm.MarkCopiesCommand.Execute(null);
 
-        vm.ClearMarksCommand.Execute(null);
+        _vm.ClearMarksCommand.Execute(null);
 
-        vm.MarkedCount.Should().Be(0);
-        vm.HasMarked.Should().BeFalse();
+        _vm.MarkedCount.Should().Be(0);
+        _vm.HasMarked.Should().BeFalse();
     }
 
     [Fact]
     public void Инвертирование_не_отмечает_эталон()
     {
-        var (vm, _, _, _) = Create();
-        vm.AddGroups(new[] { Group(1, (@"C:\ref\a.jpg", 100, true, true), (@"C:\b.jpg", 100, false, false)) });
+        var reference = Create("эталон/a.jpg");
+        var copy = Create("g1/b.jpg");
+        _vm.AddGroups(new[] { Group(1, (reference, true, true), (copy, false, false)) });
 
-        vm.InvertMarksCommand.Execute(null);
+        _vm.InvertMarksCommand.Execute(null);
 
-        vm.Rows.Single(r => r.IsProtected).IsMarked.Should().BeFalse();
-        vm.Rows.Single(r => !r.IsProtected).IsMarked.Should().BeTrue();
+        _vm.Rows.Single(r => r.IsProtected).IsMarked.Should().BeFalse();
+        _vm.Rows.Single(r => !r.IsProtected).IsMarked.Should().BeTrue();
     }
 
     [Fact]
     public void Сделать_оригиналом_переставляет_роль_внутри_группы()
     {
-        var (vm, _, _, _) = Create();
-        vm.AddGroups(new[] { Group(1, (@"C:\a.jpg", 100, true, false), (@"C:\b.jpg", 100, false, false)) });
-        vm.SelectedRow = vm.Rows.Single(r => r.Name == "b.jpg");
+        _vm.AddGroups(new[] { PairGroup() });
+        var copy = _vm.Rows.Single(r => !r.IsOriginal);
+        _vm.SelectedRow = copy;
 
-        vm.MakeSelectedOriginalCommand.Execute(null);
+        _vm.MakeSelectedOriginalCommand.Execute(null);
 
-        vm.Rows.Single(r => r.Name == "b.jpg").IsOriginal.Should().BeTrue();
-        vm.Rows.Single(r => r.Name == "a.jpg").IsOriginal.Should().BeFalse();
-        vm.Rows.Count(r => r.IsOriginal).Should().Be(1);
+        copy.IsOriginal.Should().BeTrue();
+        _vm.Rows.Count(r => r.IsOriginal).Should().Be(1);
     }
 
     [Fact]
     public async Task Удаление_отправляет_в_корзину_только_незащищённые()
     {
-        var (vm, dialogs, _, bin) = Create();
-        vm.AddGroups(new[]
-        {
-            Group(1, (@"C:\ref\a.jpg", 100, true, true), (@"C:\b.jpg", 100, false, false)),
-        });
-        foreach (var row in vm.Rows)
+        var reference = Create("эталон/a.jpg");
+        var copy = Create("g1/b.jpg");
+        var spare = Create("g1/c.jpg");
+        _vm.AddGroups(new[] { Group(1, (reference, true, true), (copy, false, false), (spare, false, false)) });
+        foreach (var row in _vm.Rows)
         {
             row.IsMarked = true;
         }
 
-        await vm.DeleteMarkedCommand.ExecuteAsync(null);
+        await _vm.DeleteMarkedCommand.ExecuteAsync(null);
 
-        bin.Requested.Should().Equal(@"C:\b.jpg");
-        dialogs.Questions.Should().ContainSingle();
-        dialogs.Questions[0].Should().Contain("эталон");
-        vm.Rows.Should().ContainSingle();
+        _vm.Rows.Should().NotContain(r => r.Path == copy);
+        _bin.Requested.Should().NotContain(reference, "файл эталона удалять нельзя");
+        _dialogs.Plans.Should().ContainSingle();
+        _dialogs.Plans[0].Refused.Should().Contain(d => d.Path == reference);
+    }
+
+    [Fact]
+    public async Task Группа_не_остаётся_пустой()
+    {
+        _vm.AddGroups(new[] { PairGroup() });
+        foreach (var row in _vm.Rows)
+        {
+            row.IsMarked = true;
+        }
+
+        await _vm.DeleteMarkedCommand.ExecuteAsync(null);
+
+        _bin.Requested.Should().ContainSingle("один файл группы обязан остаться");
+        _vm.Rows.Should().ContainSingle();
+    }
+
+    [Fact]
+    public async Task Изменившийся_файл_не_удаляется()
+    {
+        var group = PairGroup();
+        _vm.AddGroups(new[] { group });
+        var copy = _vm.Rows.Single(r => !r.IsOriginal);
+        copy.IsMarked = true;
+
+        // Кто-то дописал файл, пока окно было открыто.
+        File.WriteAllBytes(copy.Path, new byte[4096]);
+
+        await _vm.DeleteMarkedCommand.ExecuteAsync(null);
+
+        _bin.Requested.Should().BeEmpty();
+        _dialogs.Plans[0].Refused.Single().Refusal.Should().Be(DeletionRefusal.Changed);
     }
 
     [Fact]
     public async Task Отказ_в_диалоге_ничего_не_удаляет()
     {
-        var (vm, dialogs, _, bin) = Create();
-        dialogs.ConfirmAnswer = false;
-        vm.AddGroups(new[] { Group(1, (@"C:\a.jpg", 100, true, false), (@"C:\b.jpg", 100, false, false)) });
-        vm.Rows[1].IsMarked = true;
+        _dialogs.ConfirmAnswer = false;
+        _vm.AddGroups(new[] { PairGroup() });
+        _vm.Rows.Single(r => !r.IsOriginal).IsMarked = true;
 
-        await vm.DeleteMarkedCommand.ExecuteAsync(null);
+        await _vm.DeleteMarkedCommand.ExecuteAsync(null);
 
-        bin.Requested.Should().BeEmpty();
-        vm.Rows.Should().HaveCount(2);
+        _bin.Requested.Should().BeEmpty();
+        _vm.Rows.Should().HaveCount(2);
     }
 
     [Fact]
     public async Task Ничего_не_отмечено_показывает_подсказку()
     {
-        var (vm, dialogs, _, bin) = Create();
-        vm.AddGroups(new[] { Group(1, (@"C:\a.jpg", 100, true, false), (@"C:\b.jpg", 100, false, false)) });
+        _vm.AddGroups(new[] { PairGroup() });
 
-        await vm.DeleteMarkedCommand.ExecuteAsync(null);
+        await _vm.DeleteMarkedCommand.ExecuteAsync(null);
 
-        bin.Requested.Should().BeEmpty();
-        dialogs.Warnings.Should().ContainSingle();
+        _bin.Requested.Should().BeEmpty();
+        _dialogs.Warnings.Should().ContainSingle();
+        _dialogs.Plans.Should().BeEmpty("до плана дело не дошло");
     }
 
     [Fact]
     public async Task Неудачное_удаление_оставляет_строку_на_месте()
     {
-        var (vm, _, _, bin) = Create();
-        bin.Failing.Add(@"C:\b.jpg");
-        vm.AddGroups(new[] { Group(1, (@"C:\a.jpg", 100, true, false), (@"C:\b.jpg", 100, false, false)) });
-        vm.Rows[1].IsMarked = true;
+        _vm.AddGroups(new[] { PairGroup() });
+        var copy = _vm.Rows.Single(r => !r.IsOriginal);
+        _bin.Failing.Add(copy.Path);
+        copy.IsMarked = true;
+
+        await _vm.DeleteMarkedCommand.ExecuteAsync(null);
+
+        _vm.Rows.Should().HaveCount(2);
+    }
+
+    [Fact]
+    public async Task Удаление_попадает_в_журнал_операций()
+    {
+        var journalPath = Path.Combine(_root, "журнал.jsonl");
+        var vm = new ResultsViewModel(
+            _dialogs,
+            _shell,
+            _bin,
+            new DeletionPlanner(new FileSystemFileSource()),
+            new OperationJournal(journalPath));
+        vm.AddGroups(new[] { PairGroup(2) });
+        vm.Rows.Single(r => !r.IsOriginal).IsMarked = true;
 
         await vm.DeleteMarkedCommand.ExecuteAsync(null);
 
-        vm.Rows.Should().HaveCount(2);
+        var records = new OperationJournal(journalPath).ReadRecent();
+        records.Should().ContainSingle();
+        records[0].Kind.Should().Be(FileOperationKind.Recycled);
+        records[0].Succeeded.Should().BeTrue();
     }
 
     [Fact]
     public void Копирование_пути_идёт_через_оболочку()
     {
-        var (vm, _, shell, _) = Create();
-        vm.AddGroups(new[] { Group(1, (@"C:\a.jpg", 100, true, false), (@"C:\b.jpg", 100, false, false)) });
-        vm.SelectedRow = vm.Rows[0];
+        _vm.AddGroups(new[] { PairGroup() });
+        _vm.SelectedRow = _vm.Rows[0];
 
-        vm.CopySelectedPathCommand.Execute(null);
+        _vm.CopySelectedPathCommand.Execute(null);
 
-        shell.Clipboard.Should().Be(@"C:\a.jpg");
+        _shell.Clipboard.Should().Be(_vm.Rows[0].Path);
     }
 
     [Fact]
     public void Очистка_возвращает_таблицу_в_исходное_состояние()
     {
-        var (vm, _, _, _) = Create();
-        vm.AddGroups(new[] { Group(1, (@"C:\a.jpg", 100, true, false), (@"C:\b.jpg", 100, false, false)) });
+        _vm.AddGroups(new[] { PairGroup() });
 
-        vm.Clear();
+        _vm.Clear();
 
-        vm.Rows.Should().BeEmpty();
-        vm.HasRows.Should().BeFalse();
-        vm.MarkedCount.Should().Be(0);
+        _vm.Rows.Should().BeEmpty();
+        _vm.HasRows.Should().BeFalse();
+        _vm.MarkedCount.Should().Be(0);
     }
 
     [Fact]
     public void Статистика_показывает_группы_и_объём_к_освобождению()
     {
-        var (vm, _, _, _) = Create();
-        vm.AddGroups(new[]
-        {
-            Group(1, (@"C:\a.jpg", 1_048_576, true, false), (@"C:\b.jpg", 1_048_576, false, false)),
-        });
-        vm.ApplySummary(new ScanSummary { FilesSeen = 10 });
+        _vm.AddGroups(new[] { PairGroup(1, 1_048_576) });
+        _vm.ApplySummary(new ScanSummary { FilesSeen = 10 });
 
-        vm.StatisticsText.Should().Contain("10").And.Contain("МБ");
+        _vm.StatisticsText.Should().Contain("10").And.Contain("МБ");
     }
 }

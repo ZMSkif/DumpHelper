@@ -394,4 +394,85 @@
   <data name="BuildFromCommit" xml:space="preserve">
     <value>built from commit</value>
   </data>
+  <data name="ModeComingSoon" xml:space="preserve">
+    <value>coming soon</value>
+  </data>
+  <data name="LogTitle" xml:space="preserve">
+    <value>Activity log</value>
+  </data>
+  <data name="LogRefresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="LogCopy" xml:space="preserve">
+    <value>Copy all</value>
+  </data>
+  <data name="LogOpenFolder" xml:space="preserve">
+    <value>Open log folder</value>
+  </data>
+  <data name="LogEmpty" xml:space="preserve">
+    <value>The log is empty — entries will appear here as the app works.</value>
+  </data>
+  <data name="LogReadFailedFormat" xml:space="preserve">
+    <value>Could not read the log: {0}</value>
+  </data>
+  <data name="ProtectSystemFolders" xml:space="preserve">
+    <value>Protect Windows system folders</value>
+  </data>
+  <data name="ProtectSystemFoldersHint" xml:space="preserve">
+    <value>Files in Windows, Program Files and ProgramData are shown but cannot be deleted. Duplicates there are normal, and removing them breaks things.</value>
+  </data>
+  <data name="SectionSafety" xml:space="preserve">
+    <value>SAFETY</value>
+  </data>
+  <data name="DeleteConfirmTitle" xml:space="preserve">
+    <value>What will be deleted</value>
+  </data>
+  <data name="DeleteConfirmHeaderFormat" xml:space="preserve">
+    <value>{0} file(s) will go to the Recycle Bin, freeing {1}.</value>
+  </data>
+  <data name="DeleteConfirmNothing" xml:space="preserve">
+    <value>Nothing to delete: every marked file was skipped.</value>
+  </data>
+  <data name="DeleteConfirmSkippedFormat" xml:space="preserve">
+    <value>Skipped files: {0}</value>
+  </data>
+  <data name="DeleteConfirmProceed" xml:space="preserve">
+    <value>Move to Recycle Bin</value>
+  </data>
+  <data name="DeleteConfirmCancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="RefusalProtected" xml:space="preserve">
+    <value>protected: reference or system folder</value>
+  </data>
+  <data name="RefusalWholeGroup" xml:space="preserve">
+    <value>last file in its group — something must remain</value>
+  </data>
+  <data name="RefusalChanged" xml:space="preserve">
+    <value>changed since the scan — the data is stale</value>
+  </data>
+  <data name="RefusalMissing" xml:space="preserve">
+    <value>the file is gone</value>
+  </data>
+  <data name="JournalTitle" xml:space="preserve">
+    <value>What the app did to your files</value>
+  </data>
+  <data name="JournalEmpty" xml:space="preserve">
+    <value>Nothing has been deleted or moved yet.</value>
+  </data>
+  <data name="JournalOpen" xml:space="preserve">
+    <value>File operations</value>
+  </data>
+  <data name="KindRecycled" xml:space="preserve">
+    <value>to Recycle Bin</value>
+  </data>
+  <data name="KindMoved" xml:space="preserve">
+    <value>moved</value>
+  </data>
+  <data name="KindLinked" xml:space="preserve">
+    <value>replaced with a link</value>
+  </data>
+  <data name="JournalFailed" xml:space="preserve">
+    <value>failed</value>
+  </data>
 </root>

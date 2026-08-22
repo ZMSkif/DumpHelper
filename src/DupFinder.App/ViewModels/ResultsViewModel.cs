@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using DupFinder.App.Collections;
 using DupFinder.App.Resources;
 using DupFinder.App.Services;
+using DupFinder.Core.Actions;
 using DupFinder.Core.Model;
 
 namespace DupFinder.App.ViewModels;
@@ -17,6 +18,8 @@ public sealed partial class ResultsViewModel : ObservableObject
     private readonly IDialogService _dialogs;
     private readonly IShellService _shell;
     private readonly IRecycleBin _recycleBin;
+    private readonly DeletionPlanner _planner;
+    private readonly OperationJournal _journal;
 
     private readonly List<DuplicateRowViewModel> _allRows = new();
     private readonly Dictionary<int, List<DuplicateRowViewModel>> _byGroup = new();
@@ -47,11 +50,18 @@ public sealed partial class ResultsViewModel : ObservableObject
     [ObservableProperty]
     private bool _isDeleting;
 
-    public ResultsViewModel(IDialogService dialogs, IShellService shell, IRecycleBin recycleBin)
+    public ResultsViewModel(
+        IDialogService dialogs,
+        IShellService shell,
+        IRecycleBin recycleBin,
+        DeletionPlanner planner,
+        OperationJournal journal)
     {
         _dialogs = dialogs;
         _shell = shell;
         _recycleBin = recycleBin;
+        _planner = planner;
+        _journal = journal;
 
         RoleFilters = new[]
         {
@@ -168,6 +178,10 @@ public sealed partial class ResultsViewModel : ObservableObject
         UpdateStatistics();
     }
 
+    /// <summary>Показывает журнал того, что уже сделано с файлами.</summary>
+    [RelayCommand]
+    private void ShowJournal() => _dialogs.ShowOperationJournal(_journal);
+
     [RelayCommand]
     private void RevealSelected()
     {
@@ -221,40 +235,26 @@ public sealed partial class ResultsViewModel : ObservableObject
     private async Task DeleteMarkedAsync()
     {
         var marked = _allRows.Where(r => r.IsMarked).ToList();
-        var doomed = marked.Where(r => !r.IsProtected).ToList();
-        var protectedCount = marked.Count - doomed.Count;
-
-        if (doomed.Count == 0)
+        if (marked.Count == 0)
         {
             _dialogs.Warn(Strings.NothingMarked);
             return;
         }
 
-        var message = string.Format(
-            Strings.ConfirmDeleteFormat,
-            doomed.Count,
-            DuplicateRowViewModel.FormatSize(doomed.Sum(r => r.Length)));
+        // Последняя проверка живёт в движке: файл мог измениться или исчезнуть,
+        // пока окно было открыто, а группа — оказаться отмеченной целиком.
+        var candidates = marked
+            .Select(r => new DeletionCandidate(
+                new FileEntry(r.Path, r.Length, r.Modified.ToUniversalTime()),
+                r.GroupId,
+                r.IsOriginal,
+                r.IsProtected))
+            .ToList();
 
-        var wholeGroups = doomed
-            .GroupBy(r => r.GroupId)
-            .Count(g => _byGroup.TryGetValue(g.Key, out var all) && g.Count() >= all.Count);
-        if (wholeGroups > 0)
-        {
-            message += string.Format(Strings.WarnWholeGroupFormat, wholeGroups);
-        }
+        var sizes = _byGroup.ToDictionary(kv => kv.Key, kv => kv.Value.Count);
+        var plan = await Task.Run(() => _planner.Prepare(candidates, sizes)).ConfigureAwait(true);
 
-        var fuzzy = doomed.Count(r => !r.IsExact);
-        if (fuzzy > 0)
-        {
-            message += string.Format(Strings.WarnFuzzyFormat, fuzzy);
-        }
-
-        if (protectedCount > 0)
-        {
-            message += string.Format(Strings.WarnProtectedFormat, protectedCount);
-        }
-
-        if (!_dialogs.Confirm(message, Strings.ConfirmDeleteTitle))
+        if (!_dialogs.ConfirmDeletion(plan))
         {
             return;
         }
@@ -262,11 +262,25 @@ public sealed partial class ResultsViewModel : ObservableObject
         IsDeleting = true;
         try
         {
-            var paths = doomed.Select(r => r.Path).ToList();
+            var paths = plan.Allowed.Select(d => d.Path).ToList();
             var result = await Task.Run(() => _recycleBin.Delete(paths)).ConfigureAwait(true);
 
             var failed = result.Failed.ToHashSet(StringComparer.OrdinalIgnoreCase);
-            var removed = doomed.Where(r => !failed.Contains(r.Path)).ToList();
+            var now = DateTimeOffset.Now;
+            await Task.Run(() => _journal.Append(plan.Allowed.Select(d => new FileOperation(
+                now,
+                FileOperationKind.Recycled,
+                d.Path,
+                d.Candidate.File.Length,
+                !failed.Contains(d.Path))))).ConfigureAwait(true);
+
+            var byPath = _allRows.ToDictionary(r => r.Path, StringComparer.OrdinalIgnoreCase);
+            var removed = plan.Allowed
+                .Where(d => !failed.Contains(d.Path))
+                .Select(d => byPath.GetValueOrDefault(d.Path))
+                .Where(r => r is not null)
+                .Select(r => r!)
+                .ToList();
             RemoveRows(removed);
 
             var status = string.Format(Strings.DeleteResultFormat, result.Deleted);

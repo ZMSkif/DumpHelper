@@ -42,4 +42,10 @@ public interface IFileSource
 
     /// <summary>Есть ли такой файл.</summary>
     bool FileExists(string path);
+
+    /// <summary>
+    /// Текущие сведения о файле; null, если файла нет. Нужно, чтобы перед
+    /// удалением убедиться, что файл не изменился после сканирования.
+    /// </summary>
+    FileEntry? Describe(string path);
 }

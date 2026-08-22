@@ -1,0 +1,109 @@
+# Выпуск готовой сборки: собирает exe на Windows и прикладывает его к релизу.
+#
+# Бинарник в репозитории не хранится — он весит около 64 МБ, и git держал бы
+# каждую версию вечно. Вместо этого сборку делает GitHub по тегу.
+#
+# Запуск: либо `git push origin v0.3.0`, либо вручную через
+# Actions → Release → Run workflow (тогда тег создастся из выбранной ветки).
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Тег релиза, например v0.3.0'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Забрать исходники
+        uses: actions/checkout@v4
+        with:
+          # Полная история и теги нужны, чтобы версия в сборке получила
+          # правильный коммит и подхватила git describe.
+          fetch-depth: 0
+
+      - name: Поставить .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Сборка, тесты и публикация
+        shell: pwsh
+        run: ./build.ps1 -Configuration Release -Publish
+
+      - name: Собрать описание релиза
+        id: notes
+        shell: pwsh
+        run: |
+          $exe = 'artifacts/win-x64/DupFinder.exe'
+          if (-not (Test-Path $exe)) { throw "Не найден $exe" }
+
+          $tag = if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
+              '${{ inputs.tag }}'
+          } else {
+              '${{ github.ref_name }}'
+          }
+
+          $sha  = (Get-FileHash $exe -Algorithm SHA256).Hash.ToLower()
+          $size = '{0:N1}' -f ((Get-Item $exe).Length / 1MB)
+          $commit = git rev-parse HEAD
+
+          @"
+          Поиск дубликатов файлов для Windows.
+
+          ## Скачать
+
+          **DupFinder.exe** — приложение целиком в одном файле, .NET внутри.
+          Устанавливать ничего не нужно: скачали и запустили.
+
+          | | |
+          |---|---|
+          | Платформа | Windows 10/11, 64 бита |
+          | Размер | $size МБ |
+          | Коммит | ``$commit`` |
+          | SHA-256 | ``$sha`` |
+
+          При первом запуске Windows покажет синее окно «Система Windows защитила
+          ваш компьютер» — файл не подписан сертификатом. Нажмите «Подробнее» →
+          «Выполнить в любом случае».
+
+          Проверить, что файл скачался целиком:
+
+          ``````powershell
+          Get-FileHash .\DupFinder.exe -Algorithm SHA256
+          ``````
+
+          Значение должно совпасть с SHA-256 из таблицы.
+
+          ## Если что-то пошло не так
+
+          Журнал работы: ``%LOCALAPPDATA%\DupFinder\logs``. Открыть его папку можно
+          кнопкой «Журнал» прямо в приложении. Версия и коммит запущенной сборки
+          показаны в правом верхнем углу окна.
+          "@ | Set-Content -Path release-notes.md -Encoding utf8
+
+          "tag=$tag" >> $env:GITHUB_OUTPUT
+          "sha256=$sha" >> $env:GITHUB_OUTPUT
+
+      - name: Создать релиз и приложить exe
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create '${{ steps.notes.outputs.tag }}' `
+            'artifacts/win-x64/DupFinder.exe' `
+            --title 'DupFinder Pro ${{ steps.notes.outputs.tag }}' `
+            --notes-file release-notes.md `
+            --target '${{ github.sha }}'
