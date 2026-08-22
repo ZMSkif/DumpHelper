@@ -64,7 +64,12 @@ public sealed class ExactDuplicateScanner : IDuplicateScanner
 
             foreach (var group in confirmed)
             {
-                var items = OriginalSelector.Order(group, options.OriginalRule, reference);
+                var items = OriginalSelector.Order(
+                    group,
+                    options.OriginalRule,
+                    reference,
+                    pixels: null,
+                    protectSystemFolders: options.ProtectSystemFolders);
                 itemsInGroups += items.Count;
                 redundantItems += items.Count - 1;
                 redundantBytes += items.Where(i => !i.IsOriginal).Sum(i => i.Length);

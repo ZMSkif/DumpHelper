@@ -415,4 +415,13 @@
   <data name="LogReadFailedFormat" xml:space="preserve">
     <value>Could not read the log: {0}</value>
   </data>
+  <data name="ProtectSystemFolders" xml:space="preserve">
+    <value>Protect Windows system folders</value>
+  </data>
+  <data name="ProtectSystemFoldersHint" xml:space="preserve">
+    <value>Files in Windows, Program Files and ProgramData are shown but cannot be deleted. Duplicates there are normal, and removing them breaks things.</value>
+  </data>
+  <data name="SectionSafety" xml:space="preserve">
+    <value>SAFETY</value>
+  </data>
 </root>

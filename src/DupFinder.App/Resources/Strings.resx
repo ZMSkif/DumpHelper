@@ -416,4 +416,13 @@
   <data name="LogReadFailedFormat" xml:space="preserve">
     <value>Не удалось прочитать журнал: {0}</value>
   </data>
+  <data name="ProtectSystemFolders" xml:space="preserve">
+    <value>Защищать системные папки Windows</value>
+  </data>
+  <data name="ProtectSystemFoldersHint" xml:space="preserve">
+    <value>Файлы из Windows, Program Files и ProgramData будут показаны, но удалить их будет нельзя. Дубликаты там встречаются постоянно, и удаление ломает систему.</value>
+  </data>
+  <data name="SectionSafety" xml:space="preserve">
+    <value>БЕЗОПАСНОСТЬ</value>
+  </data>
 </root>

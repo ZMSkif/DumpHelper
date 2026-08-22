@@ -1,3 +1,4 @@
+using DupFinder.Core.Files;
 using DupFinder.Core.Model;
 using DupFinder.Core.Scanning;
 using FluentAssertions;
@@ -144,4 +145,62 @@ public class OriginalSelectorTests
         OriginalSelector.NormalizeReference("   ").Should().BeNull();
         OriginalSelector.NormalizeReference("/data/etalon/").Should().NotBeNull();
     }
+}
+
+public class SystemFolderProtectionTests
+{
+    private static FileEntry File(string path) =>
+        new(Path.GetFullPath(path.Replace('/', Path.DirectorySeparatorChar)), 100, DateTime.UtcNow);
+
+    [Fact]
+    public void Список_защищённых_корней_непустой_только_на_Windows()
+    {
+        if (OperatingSystem.IsWindows())
+        {
+            SystemFolders.Protected.Should().NotBeEmpty();
+        }
+        else
+        {
+            SystemFolders.Protected.Should().BeEmpty("на других системах защищать нечего");
+        }
+    }
+
+    [Fact]
+    public void Обычный_файл_не_считается_системным() =>
+        SystemFolders.IsProtected(Path.GetFullPath("/data/фото/a.jpg".Replace('/', Path.DirectorySeparatorChar)))
+            .Should().BeFalse();
+
+    [Fact]
+    public void Пустой_путь_не_роняет_проверку() =>
+        SystemFolders.IsProtected(string.Empty).Should().BeFalse();
+
+    [Fact]
+    public void Файл_внутри_защищённого_корня_помечается()
+    {
+        if (SystemFolders.Protected.Count == 0)
+        {
+            return; // проверка имеет смысл только там, где такие папки есть
+        }
+
+        var inside = Path.Combine(SystemFolders.Protected[0], "sub", "a.dll");
+
+        SystemFolders.IsProtected(inside).Should().BeTrue();
+    }
+
+    [Fact]
+    public void Выбор_оригинала_умеет_не_защищать_системные_папки()
+    {
+        var files = new[] { File("/data/a.jpg"), File("/data/b.jpg") };
+
+        var withGuard = OriginalSelector.Order(files, OriginalRule.Oldest, null, null, protectSystemFolders: true);
+        var without = OriginalSelector.Order(files, OriginalRule.Oldest, null, null, protectSystemFolders: false);
+
+        // Обычные файлы не защищены ни при каких настройках.
+        withGuard.Should().OnlyContain(i => !i.IsProtected);
+        without.Should().OnlyContain(i => !i.IsProtected);
+    }
+
+    [Fact]
+    public void Защита_системных_папок_включена_по_умолчанию() =>
+        ScanOptions.ForRoot("/data").ProtectSystemFolders.Should().BeTrue();
 }

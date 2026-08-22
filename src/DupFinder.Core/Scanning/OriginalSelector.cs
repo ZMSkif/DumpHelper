@@ -22,7 +22,8 @@ public static class OriginalSelector
         IReadOnlyList<FileEntry> files,
         OriginalRule rule,
         string? referenceFolder,
-        Func<FileEntry, PixelSize>? pixels = null)
+        Func<FileEntry, PixelSize>? pixels = null,
+        bool protectSystemFolders = true)
     {
         if (files.Count == 0)
         {
@@ -33,7 +34,10 @@ public static class OriginalSelector
         var measure = pixels ?? (_ => PixelSize.Unknown);
 
         var ordered = files
-            .Select(f => (File: f, Protected: IsInReference(f, reference)))
+            .Select(f => (
+                File: f,
+                Protected: IsInReference(f, reference)
+                    || (protectSystemFolders && SystemFolders.IsProtected(f.Path))))
             .OrderBy(x => x.Protected ? 0 : 1)
             .ThenBy(x => x.File, Comparer(rule, measure))
             .ToList();

@@ -44,6 +44,9 @@ public sealed partial class ScanViewModel : ObservableObject
     private bool _confirmBytewise;
 
     [ObservableProperty]
+    private bool _protectSystemFolders = true;
+
+    [ObservableProperty]
     private ScanMode _selectedMode = ScanMode.Exact;
 
     [ObservableProperty]
@@ -194,6 +197,7 @@ public sealed partial class ScanViewModel : ObservableObject
             IncludeHidden = IncludeHidden,
             IncludeSystem = IncludeSystem,
             DiskKind = SelectedDiskKind.Value,
+            ProtectSystemFolders = ProtectSystemFolders,
         };
     }
 

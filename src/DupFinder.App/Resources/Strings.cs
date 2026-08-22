@@ -369,4 +369,13 @@ public static class Strings
 
     /// <summary>Не удалось прочитать журнал: {0}</summary>
     public static string LogReadFailedFormat => Get(nameof(LogReadFailedFormat));
+
+    /// <summary>Защищать системные папки Windows</summary>
+    public static string ProtectSystemFolders => Get(nameof(ProtectSystemFolders));
+
+    /// <summary>Файлы из Windows, Program Files и ProgramData будут показаны, но удалить их будет нельзя. Дубликаты там встречаются постоянно, и удаление ломает систему.</summary>
+    public static string ProtectSystemFoldersHint => Get(nameof(ProtectSystemFoldersHint));
+
+    /// <summary>БЕЗОПАСНОСТЬ</summary>
+    public static string SectionSafety => Get(nameof(SectionSafety));
 }

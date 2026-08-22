@@ -10,7 +10,7 @@
 
   <Border Background="{StaticResource Surface}" CornerRadius="14"
           BorderBrush="{StaticResource CardBorder}" BorderThickness="1"
-          Effect="{StaticResource CardShadow}" Padding="14">
+          Effect="{StaticResource CardShadow}" Padding="20">
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
@@ -26,7 +26,7 @@
       </Border>
 
       <!-- Действия -->
-      <WrapPanel Grid.Row="1" Margin="0,0,0,8">
+      <WrapPanel Grid.Row="1" Margin="0,0,0,12">
         <Button Margin="0,0,6,4" Content="{x:Static res:Strings.MarkCopies}"
                 Command="{Binding Results.MarkCopiesCommand}"
                 IsEnabled="{Binding Results.HasRows}"/>
@@ -45,7 +45,7 @@
       </WrapPanel>
 
       <!-- Фильтры -->
-      <Grid Grid.Row="2" Margin="0,0,0,8">
+      <Grid Grid.Row="2" Margin="0,0,0,12">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="Auto"/>
@@ -123,9 +123,10 @@
               </Style.Triggers>
             </Style>
           </StackPanel.Style>
-          <TextBlock Text="⧉" FontSize="56" Foreground="#2A3140" HorizontalAlignment="Center"/>
+          <Image Source="/Assets/AppIcon-256.png" Width="64" Height="64" Opacity="0.28"
+                 HorizontalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"/>
           <TextBlock Text="{x:Static res:Strings.EmptyResultsTitle}" FontSize="16" FontWeight="SemiBold"
-                     Foreground="{StaticResource Muted}" HorizontalAlignment="Center" Margin="0,8,0,2"/>
+                     Foreground="{StaticResource Muted}" HorizontalAlignment="Center" Margin="0,14,0,4"/>
           <TextBlock Text="{x:Static res:Strings.EmptyResultsHint}" Foreground="{StaticResource Faint}"
                      HorizontalAlignment="Center"/>
         </StackPanel>
