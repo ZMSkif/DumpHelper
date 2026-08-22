@@ -4,3 +4,5 @@ artifacts/
 .vs/
 *.user
 TestResults/
+
+# dist/ намеренно не игнорируется: там лежит готовый exe, см. dist/README.md

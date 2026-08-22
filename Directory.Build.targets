@@ -12,4 +12,62 @@
     <Using Include="System.IO" />
   </ItemGroup>
 
+  <!--
+    Привязка сборки к git: версия и коммит вшиваются в сборку, чтобы по
+    запущенному exe всегда было видно, из какого состояния репозитория он собран.
+    Если git недоступен или это не репозиторий — сборка не падает, поля остаются
+    пустыми, и версия остаётся такой, как задана в Directory.Build.props.
+  -->
+  <Target Name="StampGitInfo"
+          BeforeTargets="GetAssemblyVersion"
+          Condition="'$(GenerateAssemblyInfo)' != 'false' And '$(DesignTimeBuild)' != 'true'">
+
+    <Exec Command="git -C &quot;$(MSBuildThisFileDirectory.TrimEnd('/').TrimEnd(''))&quot; rev-parse HEAD"
+          ConsoleToMSBuild="true" StandardOutputImportance="low" StandardErrorImportance="low"
+          ContinueOnError="true" IgnoreExitCode="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitCommit" />
+      <Output TaskParameter="ExitCode" PropertyName="_GitExitCode" />
+    </Exec>
+
+    <!-- Дальше идём, только если git реально ответил. -->
+    <PropertyGroup Condition="'$(_GitExitCode)' != '0'">
+      <_GitCommit></_GitCommit>
+    </PropertyGroup>
+
+    <Exec Command="git -C &quot;$(MSBuildThisFileDirectory.TrimEnd('/').TrimEnd(''))&quot; rev-parse --abbrev-ref HEAD"
+          Condition="'$(_GitCommit)' != ''"
+          ConsoleToMSBuild="true" StandardOutputImportance="low" StandardErrorImportance="low"
+          ContinueOnError="true" IgnoreExitCode="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitBranch" />
+    </Exec>
+
+    <Exec Command="git -C &quot;$(MSBuildThisFileDirectory.TrimEnd('/').TrimEnd(''))&quot; describe --tags --always --dirty"
+          Condition="'$(_GitCommit)' != ''"
+          ConsoleToMSBuild="true" StandardOutputImportance="low" StandardErrorImportance="low"
+          ContinueOnError="true" IgnoreExitCode="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitDescribe" />
+    </Exec>
+
+    <!-- Незакоммиченные правки помечаем: иначе «собрано из коммита X» вводит в заблуждение. -->
+    <Exec Command="git -C &quot;$(MSBuildThisFileDirectory.TrimEnd('/').TrimEnd(''))&quot; status --porcelain --untracked-files=no"
+          Condition="'$(_GitCommit)' != ''"
+          ConsoleToMSBuild="true" StandardOutputImportance="low" StandardErrorImportance="low"
+          ContinueOnError="true" IgnoreExitCode="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="_GitStatus" />
+    </Exec>
+
+    <PropertyGroup Condition="'$(_GitCommit)' != ''">
+      <_GitDirty Condition="'$(_GitStatus)' != ''">-dirty</_GitDirty>
+      <!-- SourceRevisionId сам допишется в AssemblyInformationalVersion как «0.3.0+abc123». -->
+      <SourceRevisionId>$(_GitCommit.Substring(0, 12))$(_GitDirty)</SourceRevisionId>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(_GitCommit)' != ''">
+      <AssemblyMetadata Include="GitCommit" Value="$(_GitCommit)" />
+      <AssemblyMetadata Include="GitBranch" Value="$(_GitBranch)" />
+      <AssemblyMetadata Include="GitDescribe" Value="$(_GitDescribe)" />
+    </ItemGroup>
+
+  </Target>
+
 </Project>

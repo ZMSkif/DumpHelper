@@ -388,4 +388,10 @@
   <data name="ModeNotAvailable" xml:space="preserve">
     <value>This mode arrives in the next stage. Exact copies are available now.</value>
   </data>
+  <data name="VersionTooltip" xml:space="preserve">
+    <value>Application version and the commit it was built from</value>
+  </data>
+  <data name="BuildFromCommit" xml:space="preserve">
+    <value>built from commit</value>
+  </data>
 </root>

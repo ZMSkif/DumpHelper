@@ -33,7 +33,7 @@ public partial class App : Application
         AppDomain.CurrentDomain.UnhandledException += (_, args) =>
             Log.Fatal(args.ExceptionObject as Exception, "Необработанная ошибка");
 
-        Log.Information("DupFinder Pro запускается");
+        Log.Information("DupFinder Pro запускается: {Build}", BuildInfo.FullLabel);
 
         var shell = new ShellService();
         var dialogs = new DialogService(shell);
