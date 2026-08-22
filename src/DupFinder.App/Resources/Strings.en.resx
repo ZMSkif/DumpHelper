@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle" xml:space="preserve">
+    <value>DupFinder Pro</value>
+  </data>
+  <data name="AppSubtitle" xml:space="preserve">
+    <value>Exact copies • same shot • visually similar</value>
+  </data>
+  <data name="TabScan" xml:space="preserve">
+    <value>Scan</value>
+  </data>
+  <data name="TabResults" xml:space="preserve">
+    <value>Results</value>
+  </data>
+  <data name="SectionFolders" xml:space="preserve">
+    <value>FOLDERS TO CHECK</value>
+  </data>
+  <data name="SectionMode" xml:space="preserve">
+    <value>SEARCH MODE</value>
+  </data>
+  <data name="SectionFilters" xml:space="preserve">
+    <value>FILTERS</value>
+  </data>
+  <data name="SectionOriginal" xml:space="preserve">
+    <value>TREAT AS ORIGINAL</value>
+  </data>
+  <data name="SectionReference" xml:space="preserve">
+    <value>REFERENCE FOLDER</value>
+  </data>
+  <data name="SectionPerformance" xml:space="preserve">
+    <value>PERFORMANCE</value>
+  </data>
+  <data name="AddFolder" xml:space="preserve">
+    <value>Add folder</value>
+  </data>
+  <data name="RemoveFolder" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="FoldersHint" xml:space="preserve">
+    <value>Drag folders into the window or press “Add folder”.</value>
+  </data>
+  <data name="IncludeSubfolders" xml:space="preserve">
+    <value>Include subfolders</value>
+  </data>
+  <data name="IncludeHidden" xml:space="preserve">
+    <value>Hidden files</value>
+  </data>
+  <data name="IncludeSystem" xml:space="preserve">
+    <value>System files</value>
+  </data>
+  <data name="ModeExact" xml:space="preserve">
+    <value>Exact copies</value>
+  </data>
+  <data name="ModeExactHint" xml:space="preserve">
+    <value>Files match byte for byte. The safest mode.</value>
+  </data>
+  <data name="ModeSameShot" xml:space="preserve">
+    <value>Same shot (EXIF)</value>
+  </data>
+  <data name="ModeSameShotHint" xml:space="preserve">
+    <value>Same capture date, camera and frame size. Coming in the next stage.</value>
+  </data>
+  <data name="ModeSimilar" xml:space="preserve">
+    <value>Visually similar</value>
+  </data>
+  <data name="ModeSimilarHint" xml:space="preserve">
+    <value>Compares how pictures look: re-compressed and resized copies. Coming in the next stage.</value>
+  </data>
+  <data name="FilterKind" xml:space="preserve">
+    <value>File type</value>
+  </data>
+  <data name="KindAll" xml:space="preserve">
+    <value>All files</value>
+  </data>
+  <data name="KindPhoto" xml:space="preserve">
+    <value>Photos</value>
+  </data>
+  <data name="KindVideo" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="KindAudio" xml:space="preserve">
+    <value>Audio</value>
+  </data>
+  <data name="KindDocument" xml:space="preserve">
+    <value>Documents</value>
+  </data>
+  <data name="KindArchive" xml:space="preserve">
+    <value>Archives</value>
+  </data>
+  <data name="MinSizeKb" xml:space="preserve">
+    <value>Minimum size, KB</value>
+  </data>
+  <data name="MaxSizeMb" xml:space="preserve">
+    <value>Maximum size, MB (0 = unlimited)</value>
+  </data>
+  <data name="ExcludeMasks" xml:space="preserve">
+    <value>Skip files by mask (semicolon separated)</value>
+  </data>
+  <data name="OriginalOldest" xml:space="preserve">
+    <value>Oldest file</value>
+  </data>
+  <data name="OriginalNewest" xml:space="preserve">
+    <value>Newest file</value>
+  </data>
+  <data name="OriginalShortest" xml:space="preserve">
+    <value>Shortest path</value>
+  </data>
+  <data name="OriginalResolution" xml:space="preserve">
+    <value>Highest resolution</value>
+  </data>
+  <data name="OriginalLargest" xml:space="preserve">
+    <value>Largest file</value>
+  </data>
+  <data name="OriginalFormat" xml:space="preserve">
+    <value>Original format (HEIC/RAW/PNG &gt; JPG)</value>
+  </data>
+  <data name="ReferenceHint" xml:space="preserve">
+    <value>Nothing is ever deleted from this folder.</value>
+  </data>
+  <data name="ConfirmBytewise" xml:space="preserve">
+    <value>Compare byte by byte instead of SHA-256</value>
+  </data>
+  <data name="DiskType" xml:space="preserve">
+    <value>Disk type</value>
+  </data>
+  <data name="DiskAuto" xml:space="preserve">
+    <value>Detect automatically</value>
+  </data>
+  <data name="DiskSsd" xml:space="preserve">
+    <value>SSD — fast</value>
+  </data>
+  <data name="DiskHdd" xml:space="preserve">
+    <value>Spinning hard drive</value>
+  </data>
+  <data name="DiskNetwork" xml:space="preserve">
+    <value>Network folder</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Ready.</value>
+  </data>
+  <data name="StageEnumerating" xml:space="preserve">
+    <value>Collecting the file list</value>
+  </data>
+  <data name="StageGrouping" xml:space="preserve">
+    <value>Sifting by size</value>
+  </data>
+  <data name="StagePartial" xml:space="preserve">
+    <value>Quick check of file starts</value>
+  </data>
+  <data name="StageMidTail" xml:space="preserve">
+    <value>Checking middle and end</value>
+  </data>
+  <data name="StageFull" xml:space="preserve">
+    <value>Full content check</value>
+  </data>
+  <data name="StageConfirming" xml:space="preserve">
+    <value>Confirming matches</value>
+  </data>
+  <data name="StageDone" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="StageCancelled" xml:space="preserve">
+    <value>Search cancelled.</value>
+  </data>
+  <data name="EmptyResultsTitle" xml:space="preserve">
+    <value>No results yet</value>
+  </data>
+  <data name="EmptyResultsHint" xml:space="preserve">
+    <value>Add a folder on the Scan tab and press Start.</value>
+  </data>
+  <data name="NothingFound" xml:space="preserve">
+    <value>Nothing found — no duplicates.</value>
+  </data>
+  <data name="ColumnGroup" xml:space="preserve">
+    <value>#</value>
+  </data>
+  <data name="ColumnRole" xml:space="preserve">
+    <value>ROLE</value>
+  </data>
+  <data name="ColumnMatch" xml:space="preserve">
+    <value>HOW MATCHED</value>
+  </data>
+  <data name="ColumnFile" xml:space="preserve">
+    <value>FILE</value>
+  </data>
+  <data name="ColumnKind" xml:space="preserve">
+    <value>TYPE</value>
+  </data>
+  <data name="ColumnPixels" xml:space="preserve">
+    <value>PIXELS</value>
+  </data>
+  <data name="ColumnSize" xml:space="preserve">
+    <value>SIZE</value>
+  </data>
+  <data name="ColumnModified" xml:space="preserve">
+    <value>MODIFIED</value>
+  </data>
+  <data name="ColumnFolder" xml:space="preserve">
+    <value>FOLDER</value>
+  </data>
+  <data name="RoleOriginal" xml:space="preserve">
+    <value>★ Original</value>
+  </data>
+  <data name="RoleCopy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="RoleProtected" xml:space="preserve">
+    <value>🔒 Reference</value>
+  </data>
+  <data name="MatchExact" xml:space="preserve">
+    <value>Exact copy</value>
+  </data>
+  <data name="MatchSameShot" xml:space="preserve">
+    <value>Same shot</value>
+  </data>
+  <data name="MatchSimilar" xml:space="preserve">
+    <value>Similar</value>
+  </data>
+  <data name="MatchGroupOriginal" xml:space="preserve">
+    <value>— group reference</value>
+  </data>
+  <data name="MarkCopies" xml:space="preserve">
+    <value>Mark all copies</value>
+  </data>
+  <data name="MarkInvert" xml:space="preserve">
+    <value>Invert</value>
+  </data>
+  <data name="MarkClear" xml:space="preserve">
+    <value>Clear all</value>
+  </data>
+  <data name="RevealInExplorer" xml:space="preserve">
+    <value>Show in Explorer</value>
+  </data>
+  <data name="CopyPath" xml:space="preserve">
+    <value>Copy path</value>
+  </data>
+  <data name="MakeOriginal" xml:space="preserve">
+    <value>Make it the original</value>
+  </data>
+  <data name="DeleteMarked" xml:space="preserve">
+    <value>Delete marked (to Recycle Bin)</value>
+  </data>
+  <data name="OpenLog" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="FilterPlaceholder" xml:space="preserve">
+    <value>Filter by name or path</value>
+  </data>
+  <data name="FilterRoleAll" xml:space="preserve">
+    <value>All roles</value>
+  </data>
+  <data name="FilterRoleCopies" xml:space="preserve">
+    <value>Copies only</value>
+  </data>
+  <data name="FilterRoleOriginals" xml:space="preserve">
+    <value>Originals only</value>
+  </data>
+  <data name="SummaryPlaceholder" xml:space="preserve">
+    <value>Statistics will appear after the scan.</value>
+  </data>
+  <data name="SummaryFormat" xml:space="preserve">
+    <value>Scanned: {0}   •   Unique: {1}   •   In groups: {2} (groups: {3})   •   Redundant: {4}   •   Reclaim: {5}   •   Marked: {6} ({7})</value>
+  </data>
+  <data name="ProgressFormat" xml:space="preserve">
+    <value>{0}: {1} of {2}</value>
+  </data>
+  <data name="SpeedFormat" xml:space="preserve">
+    <value>{0}/s</value>
+  </data>
+  <data name="RemainingFormat" xml:space="preserve">
+    <value>~{0} left</value>
+  </data>
+  <data name="ElapsedFormat" xml:space="preserve">
+    <value>{0} elapsed</value>
+  </data>
+  <data name="DoneFormat" xml:space="preserve">
+    <value>✓ Done in {0}. Groups found: {1}.</value>
+  </data>
+  <data name="NoFoldersSelected" xml:space="preserve">
+    <value>Add at least one folder to check first.</value>
+  </data>
+  <data name="FolderNotFound" xml:space="preserve">
+    <value>Folder not found: {0}</value>
+  </data>
+  <data name="ReferenceNotFound" xml:space="preserve">
+    <value>Reference folder not found: {0}</value>
+  </data>
+  <data name="NothingMarked" xml:space="preserve">
+    <value>Tick the files you want to delete.</value>
+  </data>
+  <data name="ConfirmDeleteTitle" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="ConfirmDeleteFormat" xml:space="preserve">
+    <value>Move {0} file(s), {1}, to the Recycle Bin?</value>
+  </data>
+  <data name="WarnWholeGroupFormat" xml:space="preserve">
+    <value>
+
+⚠ In {0} group(s) every file is marked, including the original.</value>
+  </data>
+  <data name="WarnFuzzyFormat" xml:space="preserve">
+    <value>
+
+⚠ {0} file(s) were not matched byte for byte. Review them first.</value>
+  </data>
+  <data name="WarnProtectedFormat" xml:space="preserve">
+    <value>
+
+{0} file(s) from the reference folder will be skipped.</value>
+  </data>
+  <data name="DeleteResultFormat" xml:space="preserve">
+    <value>Moved to the Recycle Bin: {0}.</value>
+  </data>
+  <data name="DeleteFailedFormat" xml:space="preserve">
+    <value> Could not delete: {0}.</value>
+  </data>
+  <data name="ErrorOpenLogPrompt" xml:space="preserve">
+    <value>Open the log folder?</value>
+  </data>
+  <data name="ErrorScanFormat" xml:space="preserve">
+    <value>The scan failed: {0}</value>
+  </data>
+  <data name="ModeNotAvailable" xml:space="preserve">
+    <value>This mode arrives in the next stage. Exact copies are available now.</value>
+  </data>
+</root>

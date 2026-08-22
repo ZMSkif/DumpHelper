@@ -1,0 +1,15 @@
+<Project>
+
+  <!--
+    SDK Windows Desktop подменяет набор неявных using-ов: System.IO из него
+    выпадает, а System.Windows.Forms (при UseWindowsForms) делает
+    Application/UserControl/DragEventArgs неоднозначными с WPF.
+    Приводим набор к ожидаемому один раз для всех оконных проектов.
+  -->
+  <ItemGroup Condition="'$(ImplicitUsings)' == 'enable' And ('$(UseWPF)' == 'true' Or '$(UseWindowsForms)' == 'true')">
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+    <Using Include="System.IO" />
+  </ItemGroup>
+
+</Project>

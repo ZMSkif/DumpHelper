@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle" xml:space="preserve">
+    <value>DupFinder Pro</value>
+    <comment>Заголовок окна</comment>
+  </data>
+  <data name="AppSubtitle" xml:space="preserve">
+    <value>Точные копии • та же съёмка • визуально похожие</value>
+  </data>
+  <data name="TabScan" xml:space="preserve">
+    <value>Сканирование</value>
+  </data>
+  <data name="TabResults" xml:space="preserve">
+    <value>Результаты</value>
+  </data>
+  <data name="SectionFolders" xml:space="preserve">
+    <value>ПАПКИ ДЛЯ ПРОВЕРКИ</value>
+  </data>
+  <data name="SectionMode" xml:space="preserve">
+    <value>РЕЖИМ ПОИСКА</value>
+  </data>
+  <data name="SectionFilters" xml:space="preserve">
+    <value>ФИЛЬТРЫ</value>
+  </data>
+  <data name="SectionOriginal" xml:space="preserve">
+    <value>ОРИГИНАЛОМ СЧИТАТЬ</value>
+  </data>
+  <data name="SectionReference" xml:space="preserve">
+    <value>ПАПКА-ЭТАЛОН</value>
+  </data>
+  <data name="SectionPerformance" xml:space="preserve">
+    <value>СКОРОСТЬ</value>
+  </data>
+  <data name="AddFolder" xml:space="preserve">
+    <value>Добавить папку</value>
+  </data>
+  <data name="RemoveFolder" xml:space="preserve">
+    <value>Убрать</value>
+  </data>
+  <data name="FoldersHint" xml:space="preserve">
+    <value>Перетащите папки прямо в окно или нажмите «Добавить папку».</value>
+  </data>
+  <data name="IncludeSubfolders" xml:space="preserve">
+    <value>Включая подпапки</value>
+  </data>
+  <data name="IncludeHidden" xml:space="preserve">
+    <value>Скрытые файлы</value>
+  </data>
+  <data name="IncludeSystem" xml:space="preserve">
+    <value>Системные файлы</value>
+  </data>
+  <data name="ModeExact" xml:space="preserve">
+    <value>Точные копии</value>
+  </data>
+  <data name="ModeExactHint" xml:space="preserve">
+    <value>Файлы совпадают байт в байт. Самый надёжный режим — такие копии можно удалять спокойно.</value>
+  </data>
+  <data name="ModeSameShot" xml:space="preserve">
+    <value>Та же съёмка (EXIF)</value>
+  </data>
+  <data name="ModeSameShotHint" xml:space="preserve">
+    <value>Одинаковые дата съёмки, камера и размер кадра. Ловит одно фото в HEIC и JPG. Появится на следующем этапе.</value>
+  </data>
+  <data name="ModeSimilar" xml:space="preserve">
+    <value>Визуально похожие</value>
+  </data>
+  <data name="ModeSimilarHint" xml:space="preserve">
+    <value>Сравнение картинки «на глаз»: пересжатые и уменьшенные копии. Появится на следующем этапе.</value>
+  </data>
+  <data name="FilterKind" xml:space="preserve">
+    <value>Тип файлов</value>
+  </data>
+  <data name="KindAll" xml:space="preserve">
+    <value>Все файлы</value>
+  </data>
+  <data name="KindPhoto" xml:space="preserve">
+    <value>Фото</value>
+  </data>
+  <data name="KindVideo" xml:space="preserve">
+    <value>Видео</value>
+  </data>
+  <data name="KindAudio" xml:space="preserve">
+    <value>Аудио</value>
+  </data>
+  <data name="KindDocument" xml:space="preserve">
+    <value>Документы</value>
+  </data>
+  <data name="KindArchive" xml:space="preserve">
+    <value>Архивы</value>
+  </data>
+  <data name="MinSizeKb" xml:space="preserve">
+    <value>Минимальный размер, КБ</value>
+  </data>
+  <data name="MaxSizeMb" xml:space="preserve">
+    <value>Максимальный размер, МБ (0 — без ограничения)</value>
+  </data>
+  <data name="ExcludeMasks" xml:space="preserve">
+    <value>Не проверять файлы по маске (через точку с запятой)</value>
+  </data>
+  <data name="OriginalOldest" xml:space="preserve">
+    <value>Самый старый файл</value>
+  </data>
+  <data name="OriginalNewest" xml:space="preserve">
+    <value>Самый новый файл</value>
+  </data>
+  <data name="OriginalShortest" xml:space="preserve">
+    <value>С самым коротким путём</value>
+  </data>
+  <data name="OriginalResolution" xml:space="preserve">
+    <value>Наибольшее разрешение</value>
+  </data>
+  <data name="OriginalLargest" xml:space="preserve">
+    <value>Самый большой файл</value>
+  </data>
+  <data name="OriginalFormat" xml:space="preserve">
+    <value>Исходный формат (HEIC/RAW/PNG &gt; JPG)</value>
+  </data>
+  <data name="ReferenceHint" xml:space="preserve">
+    <value>Из этой папки ничего никогда не удаляется.</value>
+  </data>
+  <data name="ConfirmBytewise" xml:space="preserve">
+    <value>Сверять побайтно вместо SHA-256</value>
+  </data>
+  <data name="DiskType" xml:space="preserve">
+    <value>Тип диска</value>
+  </data>
+  <data name="DiskAuto" xml:space="preserve">
+    <value>Определить самому</value>
+  </data>
+  <data name="DiskSsd" xml:space="preserve">
+    <value>SSD — быстрый</value>
+  </data>
+  <data name="DiskHdd" xml:space="preserve">
+    <value>Обычный жёсткий диск</value>
+  </data>
+  <data name="DiskNetwork" xml:space="preserve">
+    <value>Сетевая папка</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Начать поиск</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Отменить</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Готов к работе.</value>
+  </data>
+  <data name="StageEnumerating" xml:space="preserve">
+    <value>Собираю список файлов</value>
+  </data>
+  <data name="StageGrouping" xml:space="preserve">
+    <value>Отсеиваю по размеру</value>
+  </data>
+  <data name="StagePartial" xml:space="preserve">
+    <value>Быстрая проверка начала файлов</value>
+  </data>
+  <data name="StageMidTail" xml:space="preserve">
+    <value>Проверка середины и конца</value>
+  </data>
+  <data name="StageFull" xml:space="preserve">
+    <value>Полная сверка содержимого</value>
+  </data>
+  <data name="StageConfirming" xml:space="preserve">
+    <value>Подтверждаю совпадения</value>
+  </data>
+  <data name="StageDone" xml:space="preserve">
+    <value>Готово</value>
+  </data>
+  <data name="StageCancelled" xml:space="preserve">
+    <value>Поиск отменён.</value>
+  </data>
+  <data name="EmptyResultsTitle" xml:space="preserve">
+    <value>Результатов пока нет</value>
+  </data>
+  <data name="EmptyResultsHint" xml:space="preserve">
+    <value>Добавьте папку на вкладке «Сканирование» и нажмите «Начать поиск».</value>
+  </data>
+  <data name="NothingFound" xml:space="preserve">
+    <value>Ничего не найдено — копий нет.</value>
+  </data>
+  <data name="ColumnGroup" xml:space="preserve">
+    <value>#</value>
+  </data>
+  <data name="ColumnRole" xml:space="preserve">
+    <value>РОЛЬ</value>
+  </data>
+  <data name="ColumnMatch" xml:space="preserve">
+    <value>КАК НАЙДЕНО</value>
+  </data>
+  <data name="ColumnFile" xml:space="preserve">
+    <value>ФАЙЛ</value>
+  </data>
+  <data name="ColumnKind" xml:space="preserve">
+    <value>ТИП</value>
+  </data>
+  <data name="ColumnPixels" xml:space="preserve">
+    <value>ПИКС.</value>
+  </data>
+  <data name="ColumnSize" xml:space="preserve">
+    <value>РАЗМЕР</value>
+  </data>
+  <data name="ColumnModified" xml:space="preserve">
+    <value>ИЗМЕНЁН</value>
+  </data>
+  <data name="ColumnFolder" xml:space="preserve">
+    <value>ПАПКА</value>
+  </data>
+  <data name="RoleOriginal" xml:space="preserve">
+    <value>★ Оригинал</value>
+  </data>
+  <data name="RoleCopy" xml:space="preserve">
+    <value>Копия</value>
+  </data>
+  <data name="RoleProtected" xml:space="preserve">
+    <value>🔒 Эталон</value>
+  </data>
+  <data name="MatchExact" xml:space="preserve">
+    <value>Точная копия</value>
+  </data>
+  <data name="MatchSameShot" xml:space="preserve">
+    <value>Та же съёмка</value>
+  </data>
+  <data name="MatchSimilar" xml:space="preserve">
+    <value>Похоже</value>
+  </data>
+  <data name="MatchGroupOriginal" xml:space="preserve">
+    <value>— эталон группы</value>
+  </data>
+  <data name="MarkCopies" xml:space="preserve">
+    <value>Отметить все копии</value>
+  </data>
+  <data name="MarkInvert" xml:space="preserve">
+    <value>Инвертировать</value>
+  </data>
+  <data name="MarkClear" xml:space="preserve">
+    <value>Снять все</value>
+  </data>
+  <data name="RevealInExplorer" xml:space="preserve">
+    <value>Показать в Проводнике</value>
+  </data>
+  <data name="CopyPath" xml:space="preserve">
+    <value>Копировать путь</value>
+  </data>
+  <data name="MakeOriginal" xml:space="preserve">
+    <value>Сделать оригиналом</value>
+  </data>
+  <data name="DeleteMarked" xml:space="preserve">
+    <value>Удалить отмеченные (в Корзину)</value>
+  </data>
+  <data name="OpenLog" xml:space="preserve">
+    <value>Журнал</value>
+  </data>
+  <data name="FilterPlaceholder" xml:space="preserve">
+    <value>Фильтр по имени или пути</value>
+  </data>
+  <data name="FilterRoleAll" xml:space="preserve">
+    <value>Все роли</value>
+  </data>
+  <data name="FilterRoleCopies" xml:space="preserve">
+    <value>Только копии</value>
+  </data>
+  <data name="FilterRoleOriginals" xml:space="preserve">
+    <value>Только оригиналы</value>
+  </data>
+  <data name="SummaryPlaceholder" xml:space="preserve">
+    <value>Статистика появится после сканирования.</value>
+  </data>
+  <data name="SummaryFormat" xml:space="preserve">
+    <value>Проверено: {0}   •   Без копий: {1}   •   В группах: {2} (групп: {3})   •   Лишних копий: {4}   •   Освободить: {5}   •   Отмечено: {6} ({7})</value>
+  </data>
+  <data name="ProgressFormat" xml:space="preserve">
+    <value>{0}: {1} из {2}</value>
+  </data>
+  <data name="SpeedFormat" xml:space="preserve">
+    <value>{0}/с</value>
+  </data>
+  <data name="RemainingFormat" xml:space="preserve">
+    <value>осталось ~{0}</value>
+  </data>
+  <data name="ElapsedFormat" xml:space="preserve">
+    <value>прошло {0}</value>
+  </data>
+  <data name="DoneFormat" xml:space="preserve">
+    <value>✓ Готово за {0}. Найдено групп: {1}.</value>
+  </data>
+  <data name="NoFoldersSelected" xml:space="preserve">
+    <value>Сначала добавьте хотя бы одну папку для проверки.</value>
+  </data>
+  <data name="FolderNotFound" xml:space="preserve">
+    <value>Папка не найдена: {0}</value>
+  </data>
+  <data name="ReferenceNotFound" xml:space="preserve">
+    <value>Папка-эталон не найдена: {0}</value>
+  </data>
+  <data name="NothingMarked" xml:space="preserve">
+    <value>Отметьте галочками файлы, которые нужно удалить.</value>
+  </data>
+  <data name="ConfirmDeleteTitle" xml:space="preserve">
+    <value>Подтверждение</value>
+  </data>
+  <data name="ConfirmDeleteFormat" xml:space="preserve">
+    <value>Отправить в Корзину {0} файл(ов), {1}?</value>
+  </data>
+  <data name="WarnWholeGroupFormat" xml:space="preserve">
+    <value>
+
+⚠ В {0} группах отмечены ВСЕ файлы, включая оригинал.</value>
+  </data>
+  <data name="WarnFuzzyFormat" xml:space="preserve">
+    <value>
+
+⚠ {0} файл(ов) найдены не побайтно. Посмотрите их глазами перед удалением.</value>
+  </data>
+  <data name="WarnProtectedFormat" xml:space="preserve">
+    <value>
+
+{0} файл(ов) из папки-эталона будут пропущены.</value>
+  </data>
+  <data name="DeleteResultFormat" xml:space="preserve">
+    <value>В Корзину отправлено: {0}.</value>
+  </data>
+  <data name="DeleteFailedFormat" xml:space="preserve">
+    <value> Не удалось удалить: {0}.</value>
+  </data>
+  <data name="ErrorOpenLogPrompt" xml:space="preserve">
+    <value>Открыть папку с журналом?</value>
+  </data>
+  <data name="ErrorScanFormat" xml:space="preserve">
+    <value>Во время поиска произошла ошибка: {0}</value>
+  </data>
+  <data name="ModeNotAvailable" xml:space="preserve">
+    <value>Этот режим появится на следующем этапе. Пока доступны точные копии.</value>
+  </data>
+</root>

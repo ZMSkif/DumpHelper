@@ -2,16 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <RootNamespace>DupFinder.Imaging.Tests</RootNamespace>
+    <RootNamespace>DupFinder.App.Tests</RootNamespace>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
   </PropertyGroup>
-
-  <ItemGroup>
-    <!-- Картинки для тестов лежат в общей папке фикстур (ТЗ §2). -->
-    <None Include="../fixtures/**/*" CopyToOutputDirectory="PreserveNewest" LinkBase="fixtures" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
@@ -21,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../src/DupFinder.Imaging/DupFinder.Imaging.csproj" />
+    <ProjectReference Include="../../src/DupFinder.App/DupFinder.App.csproj" />
   </ItemGroup>
 
 </Project>

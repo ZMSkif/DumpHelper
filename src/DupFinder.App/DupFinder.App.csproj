@@ -6,6 +6,8 @@
     <RootNamespace>DupFinder.App</RootNamespace>
     <AssemblyName>DupFinder</AssemblyName>
     <UseWPF>true</UseWPF>
+    <!-- WinForms нужен только ради проверенного диалога выбора папки. -->
+    <UseWindowsForms>true</UseWindowsForms>
     <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
     <SatelliteResourceLanguages>ru;en</SatelliteResourceLanguages>
   </PropertyGroup>
