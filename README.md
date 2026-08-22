@@ -28,7 +28,13 @@
 
 ---
 
-## Как собрать и запустить
+## Готовая сборка
+
+Собирать ничего не нужно: в папке [`dist/`](dist/) лежит **`DupFinder.exe`** —
+приложение целиком в одном файле, вместе с .NET внутри. Скачали, запустили.
+Windows 10/11, 64 бита. Контрольная сумма и подробности — в [`dist/README.md`](dist/README.md).
+
+## Как собрать самому
 
 Нужен [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) и Windows 10/11.
 
@@ -49,7 +55,13 @@ dotnet run --project src/DupFinder.App
 ```powershell
 dotnet run --project tools/DupFinder.Cli -- scan "D:\Фото" --min-kb 1
 dotnet run --project tools/DupFinder.Cli -- gen "D:\Тест" 5000 800   # тестовый корпус
+dotnet run --project tools/DupFinder.Cli -- gen-strings              # перегенерировать Strings.cs
 ```
+
+Кроме `build.ps1` — тонкой обёртки над `dotnet restore/build/test/publish` — в проекте
+нет ни одного скрипта: движок, приложение, тесты, генератор тестовых данных и
+генератор ресурсных строк написаны на C#. Всё то же самое делается обычными
+командами `dotnet`, если PowerShell не нужен.
 
 ---
 

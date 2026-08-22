@@ -4,8 +4,8 @@ using System.Resources;
 namespace DupFinder.App.Resources;
 
 /// <summary>
-/// Доступ к строкам интерфейса. Файл сгенерирован из Strings.resx скриптом
-/// tools/scripts/gen-strings.py — правьте .resx, а не этот файл.
+/// Доступ к строкам интерфейса. Файл сгенерирован из Strings.resx командой
+/// `dupfinder-cli gen-strings` — правьте .resx, а не этот файл.
 /// Локализация заведена с первого дня, как требует ТЗ §11.
 /// </summary>
 public static class Strings

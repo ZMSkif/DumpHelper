@@ -29,6 +29,7 @@ internal static class Program
             {
                 "scan" => await ScanAsync(args.Skip(1).ToArray()).ConfigureAwait(false),
                 "gen" => Generate(args.Skip(1).ToArray()),
+                "gen-strings" => StringsGenerator.Run(args.Skip(1).ToArray()),
                 _ => Unknown(args[0]),
             };
         }
@@ -146,6 +147,7 @@ internal static class Program
         Console.WriteLine();
         Console.WriteLine("  scan <папка…> [--min-kb N] [--ref <папка>] [--bytewise] [--quiet]");
         Console.WriteLine("  gen  <папка> [файлов] [копий]");
+        Console.WriteLine("  gen-strings [корень репозитория]   — перегенерировать Strings.cs из Strings.resx");
     }
 
     private sealed class ConsoleScanLog : IScanLog
