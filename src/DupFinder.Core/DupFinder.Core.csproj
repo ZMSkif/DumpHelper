@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>DupFinder.Core</RootNamespace>
+    <!-- ТЗ §8: движок не знает о WPF. Здесь нет и не должно быть ссылок на PresentationCore. -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Hashing" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="DupFinder.Core.Tests" />
+  </ItemGroup>
+
+</Project>

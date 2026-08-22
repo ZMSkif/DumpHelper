@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>DupFinder.Imaging</RootNamespace>
+    <!-- Единственный проект, которому разрешён WIC (ТЗ §8). -->
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../DupFinder.Core/DupFinder.Core.csproj" />
+  </ItemGroup>
+
+</Project>

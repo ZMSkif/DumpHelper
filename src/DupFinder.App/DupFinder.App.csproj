@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>DupFinder.App</RootNamespace>
+    <AssemblyName>DupFinder</AssemblyName>
+    <UseWPF>true</UseWPF>
+    <!-- WinForms нужен только ради проверенного диалога выбора папки. -->
+    <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <SatelliteResourceLanguages>ru;en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.Sinks.File" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../DupFinder.Core/DupFinder.Core.csproj" />
+    <ProjectReference Include="../DupFinder.Imaging/DupFinder.Imaging.csproj" />
+  </ItemGroup>
+
+</Project>

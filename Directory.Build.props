@@ -1,0 +1,20 @@
+<Project>
+
+  <PropertyGroup>
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Позволяет собирать net8.0-windows проекты на любой ОС (компиляция, не запуск). -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <Deterministic>true</Deterministic>
+    <NeutralLanguage>ru</NeutralLanguage>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+    <Product>DupFinder Pro</Product>
+    <Company>DupFinder</Company>
+    <Version>0.3.0</Version>
+    <Copyright>DupFinder Pro</Copyright>
+  </PropertyGroup>
+
+</Project>
