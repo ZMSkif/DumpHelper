@@ -1,7 +1,12 @@
-# Выпуск готовой сборки: собирает exe на Windows и прикладывает его к релизу.
+# Выпуск готовой сборки: собирает exe и прикладывает его к релизу.
 #
 # Бинарник в репозитории не хранится — он весит около 64 МБ, и git держал бы
 # каждую версию вечно. Вместо этого сборку делает GitHub по тегу.
+#
+# Собираем на Linux: .NET умеет собирать приложения под Windows с любой ОС
+# (EnableWindowsTargeting в Directory.Build.props), а линуксовые раннеры
+# доступнее и дешевле. Тесты, которым нужна настоящая Windows, вынесены
+# в отдельную задачу, и она релиз не блокирует.
 #
 # Запуск: либо `git push origin v0.3.0`, либо вручную через
 # Actions → Release → Run workflow (тогда тег создастся из выбранной ветки).
@@ -24,7 +29,7 @@ permissions:
 
 jobs:
   release:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Забрать исходники
@@ -39,7 +44,7 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Сборка, тесты и публикация
+      - name: Сборка, тесты движка и публикация
         shell: pwsh
         run: ./build.ps1 -Configuration Release -Publish
 
@@ -67,6 +72,7 @@ jobs:
 
           **DupFinder.exe** — приложение целиком в одном файле, .NET внутри.
           Устанавливать ничего не нужно: скачали и запустили.
+          Архивы «Source code» ниже — это исходники, они для запуска не нужны.
 
           | | |
           |---|---|
@@ -89,13 +95,12 @@ jobs:
 
           ## Если что-то пошло не так
 
-          Журнал работы: ``%LOCALAPPDATA%\DupFinder\logs``. Открыть его папку можно
-          кнопкой «Журнал» прямо в приложении. Версия и коммит запущенной сборки
-          показаны в правом верхнем углу окна.
+          Журнал работы: ``%LOCALAPPDATA%\DupFinder\logs``. Открыть его можно
+          кнопкой «Журнал» прямо в приложении. Версия и коммит запущенной
+          сборки показаны в правом верхнем углу окна.
           "@ | Set-Content -Path release-notes.md -Encoding utf8
 
           "tag=$tag" >> $env:GITHUB_OUTPUT
-          "sha256=$sha" >> $env:GITHUB_OUTPUT
 
       - name: Создать релиз и приложить exe
         shell: pwsh
@@ -107,3 +112,26 @@ jobs:
             --title 'DupFinder Pro ${{ steps.notes.outputs.tag }}' `
             --notes-file release-notes.md `
             --target '${{ github.sha }}'
+
+  # Тесты интерфейса и картинок требуют настоящей Windows. Релиз они не
+  # блокируют: если раннеров Windows нет, сборка всё равно выпускается,
+  # а результат этой задачи виден отдельно.
+  windows-tests:
+    runs-on: windows-latest
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Тесты, которым нужна Windows
+        shell: pwsh
+        run: |
+          dotnet build DupFinder.sln -c Release
+          dotnet test tests/DupFinder.App.Tests -c Release --no-build
+          dotnet test tests/DupFinder.Imaging.Tests -c Release --no-build
