@@ -389,4 +389,10 @@
   <data name="ModeNotAvailable" xml:space="preserve">
     <value>Этот режим появится на следующем этапе. Пока доступны точные копии.</value>
   </data>
+  <data name="VersionTooltip" xml:space="preserve">
+    <value>Версия приложения и коммит, из которого оно собрано</value>
+  </data>
+  <data name="BuildFromCommit" xml:space="preserve">
+    <value>собрано из коммита</value>
+  </data>
 </root>
